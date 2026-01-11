@@ -320,6 +320,10 @@ Este documento debe ser referenciado por:
 
 ## Referencias
 
+### Repositorio
+
+- **GitHub:** https://github.com/rflvz/nietzsche-ai
+
 ### Documentación del Proyecto
 
 - **Proyecto en Linear:** https://linear.app/clasificadoria/project/sistema-de-generacion-de-valores-nietzscheano-bd208887ba46
