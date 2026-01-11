@@ -1,0 +1,345 @@
+# Sistema de Generación de Valores Nietzscheano
+
+## Contexto del Proyecto
+
+### Objetivo Principal
+
+Sistema de IA experimental que genera valores filosóficos nuevos mediante un proceso de cuatro fases inspirado en la filosofía de Nietzsche:
+
+1. **Deconstrucción genealógica** de conceptos morales existentes
+2. **Fase nihilista** (vacío conceptual necesario)
+3. **Creación de valores genuinamente nuevos**
+4. **Evaluación** con criterio del "eterno retorno"
+
+### Concepto Filosófico
+
+Este proyecto está inspirado en la filosofía de Friedrich Nietzsche, específicamente:
+
+- **Genealogía de la moral**: Análisis crítico del origen histórico de los valores morales
+- **Nihilismo**: Reconocimiento del vacío de valores tradicionales como paso necesario
+- **Transmutación de valores**: Creación activa de nuevos valores que afirmen la vida
+- **Eterno retorno**: Criterio de evaluación que pregunta "¿Querrías vivir esta vida infinitamente?"
+
+**IMPORTANTE**: Sistema sin restricciones morales por diseño filosófico. El nihilismo es feature, no bug. El sistema está diseñado para explorar la creación de valores sin limitaciones morales tradicionales.
+
+### Personajes Nietzscheanos (Agentes)
+
+El sistema utiliza agentes filosóficos que representan diferentes perspectivas nietzscheanas:
+
+- **Zarathustra**: Profeta afirmativo, creador de valores, aplica el eterno retorno
+- **Genealogist**: Crítico genealógico que deconstruye valores existentes
+- **Dionysus**: Fuerza caótica, creativa y destructiva, crea desde el vacío
+- **Apollo**: Principio de forma, orden y estructura, da forma a valores
+- **LastMan**: Nihilismo pasivo, advertencia contra valores débiles
+
+## Stack Tecnológico
+
+### Runtime y Lenguaje
+
+- **Node.js**: 20 LTS
+- **TypeScript**: 5.3+ (strict mode obligatorio)
+- **Package Manager**: pnpm
+
+### Backend
+
+- **Fastify**: Framework web para API REST
+- **OpenAI SDK**: Integración con LLM (usado con LM Studio local)
+- **Transformers.js** (@xenova/transformers): Generación de embeddings
+- **Drizzle ORM**: ORM para bases de datos
+- **BullMQ**: Sistema de colas para procesamiento en background
+
+### Bases de Datos
+
+- **PostgreSQL 15+**: Base de datos principal con extensión pgvector para embeddings
+- **Neo4j 5.x**: Base de datos de grafos para relaciones genealógicas
+- **Redis 7.x**: Cache y sistema de colas
+
+### Testing y Calidad
+
+- **Vitest**: Framework de testing
+- **Pino**: Sistema de logging estructurado
+- **prom-client**: Métricas Prometheus
+
+### Frontend (Fase Posterior)
+
+- **Next.js 14**: Framework React para frontend
+
+### Infraestructura
+
+- **Docker Compose**: Orquestación de servicios (PostgreSQL, Neo4j, Redis, Prometheus, Grafana)
+
+## Arquitectura
+
+### Estructura de Carpetas
+
+```
+IA-newvalue/
+├── src/                    # Código fuente principal
+│   ├── config/            # Configuración (env, logger, database)
+│   ├── types/             # Tipos TypeScript (Result, Value, Phase, etc.)
+│   ├── core/              # Componentes core
+│   │   ├── Orchestrator   # Coordinador principal
+│   │   ├── ValueEngine    # Motor FSM
+│   │   ├── DialecticalSystem  # Sistema multi-agente
+│   │   └── NihilismMonitor    # Observer de fases nihilistas
+│   ├── modules/           # Módulos de fases
+│   │   ├── DeconstructionModule
+│   │   ├── NihilisticModule
+│   │   ├── CreativeModule
+│   │   └── EvaluationModule
+│   ├── agents/            # Agentes filosóficos
+│   │   ├── Zarathustra
+│   │   ├── Genealogist
+│   │   ├── Dionysus
+│   │   ├── Apollo
+│   │   └── LastMan
+│   ├── llm/               # Integración con LLM
+│   ├── embeddings/        # Sistema de embeddings (Transformers.js)
+│   ├── db/                # Bases de datos (PostgreSQL, Neo4j, Redis)
+│   ├── rag/               # Sistema RAG
+│   │   ├── document-processor
+│   │   ├── chunker
+│   │   └── retriever
+│   ├── monitoring/        # Monitoreo y métricas (Prometheus)
+│   ├── api/               # API REST (Fastify)
+│   ├── queues/            # Colas de procesamiento (BullMQ)
+│   └── utils/             # Utilidades
+├── data/                  # Datos (corpus de Nietzsche, prompts, exports)
+├── tests/                 # Tests (unit, integration)
+├── scripts/               # Scripts de utilidad
+└── docs/                  # Documentación
+```
+
+### Componentes Principales
+
+#### Orchestrator
+Coordinador principal que orquesta el proceso completo de generación de valores. Gestiona el flujo de las 4 fases y coordina la comunicación entre módulos y sistemas.
+
+#### ValueEngine
+Motor de máquina de estados finitos (FSM) que gestiona el estado del proceso de generación. Valida transiciones entre fases y mantiene el estado actual.
+
+#### DialecticalSystem
+Sistema multi-agente que coordina debates filosóficos entre los diferentes agentes nietzscheanos. Sintetiza perspectivas múltiples en una visión coherente.
+
+#### NihilismMonitor
+Observer que monitorea y clasifica fases nihilistas del sistema. Detecta valores débiles y genera alertas cuando es necesario.
+
+#### RAG System
+Sistema de Retrieval-Augmented Generation que proporciona contexto filosófico de Nietzsche para enriquecer el proceso de generación.
+
+### Flujo de 4 Fases
+
+1. **Deconstrucción**: Genealogist analiza y deconstruye valores existentes
+2. **Nihilismo**: Dionysus crea vacío, LastMan advierte sobre pasividad
+3. **Creación**: Zarathustra, Dionysus y Apollo crean valores nuevos
+4. **Evaluación**: Zarathustra aplica eterno retorno, Apollo evalúa estructura
+
+### Sistema Multi-Agente
+
+Los agentes filosóficos participan en debates dialécticos coordinados por DialecticalSystem. Cada agente aporta una perspectiva única basada en la filosofía de Nietzsche.
+
+## Reglas de Desarrollo
+
+### TypeScript
+
+- **Strict mode obligatorio**: `"strict": true` en tsconfig.json
+- **Tipos explícitos**: Evitar `any`, usar tipos específicos
+- **Result Pattern**: Usar `Result<T, E>` para manejo de errores en lugar de excepciones
+- **Interfaces sobre tipos**: Preferir interfaces para contratos públicos
+- **Enums para constantes**: Usar enums para valores constantes relacionados
+
+### Estructura de Archivos
+
+- **Un archivo por clase/componente**: Mantener archivos enfocados
+- **Barrel exports**: Usar `index.ts` para exportar desde módulos
+- **Nombres descriptivos**: Archivos y funciones deben ser autoexplicativos
+- **Kebab-case para archivos**: `value-engine.ts`, `dialectical-system.ts`
+- **PascalCase para clases**: `ValueEngine`, `DialecticalSystem`
+
+### Patrones de Diseño
+
+#### Result Pattern
+```typescript
+type Result<T, E = Error> = 
+  | { ok: true; value: T }
+  | { ok: false; error: E };
+```
+
+Usar Result para manejo de errores funcional en lugar de excepciones.
+
+#### Finite State Machine (FSM)
+ValueEngine implementa una máquina de estados finitos para gestionar las transiciones entre fases del proceso.
+
+#### Observer Pattern
+NihilismMonitor observa cambios en ValueEngine y reacciona a transiciones de estado.
+
+#### Strategy Pattern
+Diferentes agentes implementan la misma interfaz Agent pero con estrategias diferentes.
+
+#### Repository Pattern
+Abstraer acceso a datos mediante repositorios (ValueRepository, GenealogyRepository).
+
+### Manejo de Errores
+
+- **Result Pattern**: Preferir Result<T, E> sobre excepciones
+- **Errores tipados**: Crear clases de error específicas
+- **Logging estructurado**: Usar Pino para logging con contexto
+- **Error recovery**: Implementar estrategias de recuperación cuando sea posible
+
+### Testing
+
+- **Vitest**: Framework de testing
+- **Cobertura mínima**: 80% para código crítico
+- **Tests unitarios**: Para funciones y métodos individuales
+- **Tests de integración**: Para flujos completos
+- **Tests de FSM**: Verificar transiciones de estado válidas
+- **Tests de agentes**: Verificar comportamiento de cada agente
+
+### Logging y Métricas
+
+- **Pino**: Logging estructurado con niveles apropiados
+- **Prometheus**: Métricas para monitoreo (prom-client)
+- **Contexto en logs**: Incluir información relevante (phase, agent, valueId)
+- **Métricas clave**: Duración de fases, clasificación de nihilismo, errores
+
+## Estándares y Convenciones
+
+### Nombres
+
+- **Clases**: PascalCase (`ValueEngine`, `DialecticalSystem`)
+- **Funciones/Métodos**: camelCase (`generateValue`, `transitionTo`)
+- **Constantes**: UPPER_SNAKE_CASE (`MAX_RETRIES`, `DEFAULT_TIMEOUT`)
+- **Archivos**: kebab-case (`value-engine.ts`, `dialectical-system.ts`)
+- **Interfaces**: PascalCase con prefijo `I` opcional (`IAgent`, `Agent`)
+
+### Estructura de Módulos
+
+```typescript
+// Imports externos
+import { FastifyInstance } from 'fastify';
+import { Result } from '@/types/result';
+
+// Imports internos
+import { ValueEngine } from '@/core/value-engine';
+import { Agent } from '@/agents/agent';
+
+// Tipos locales
+type ModuleConfig = {
+  // ...
+};
+
+// Clase principal
+export class ModuleName {
+  // ...
+}
+
+// Funciones auxiliares (si aplica)
+function helperFunction() {
+  // ...
+}
+```
+
+### Comentarios y Documentación
+
+- **JSDoc para funciones públicas**: Documentar parámetros, retorno y excepciones
+- **Comentarios explicativos**: Para lógica compleja o decisiones no obvias
+- **Evitar comentarios obvios**: El código debe ser autoexplicativo
+- **Documentar decisiones filosóficas**: Explicar por qué se toma un enfoque nietzscheano
+
+### Imports
+
+- **Orden**: Externos → Internos → Relativos
+- **Agrupar**: Agrupar imports relacionados
+- **Barrel exports**: Usar `@/` alias para imports desde raíz
+- **Evitar imports circulares**: Diseñar estructura para evitar dependencias circulares
+
+### Git y Commits
+
+- **Conventional Commits**: Usar formato `type(scope): description`
+- **Tipos**: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+- **Referencias a issues**: Incluir `Closes DNT-XXX` en commits
+- **Branches**: `docs/DNT-XXX-descripcion` o `feature/DNT-XXX-descripcion`
+
+## Convenciones Específicas del Proyecto
+
+### Agentes Filosóficos
+
+- Cada agente implementa la interfaz `Agent`
+- Cada agente tiene una personalidad y perspectiva definida
+- Los agentes deben generar perspectivas coherentes con su filosofía
+- Los agentes consultan RAG System para contexto nietzscheano
+
+### Fases del Proceso
+
+- Las fases son secuenciales y deben completarse en orden
+- Cada fase tiene precondiciones y postcondiciones claras
+- Las transiciones de fase son gestionadas por ValueEngine
+- Los errores en una fase deben manejarse apropiadamente
+
+### RAG System
+
+- El corpus de Nietzsche debe estar procesado y indexado
+- Los embeddings se generan usando Transformers.js
+- Las búsquedas semánticas usan pgvector en PostgreSQL
+- El contexto debe ser relevante y enriquecer las generaciones
+
+### Monitoreo de Nihilismo
+
+- NihilismMonitor observa todas las fases pero se enfoca en la fase nihilista
+- Debe clasificar tipos de nihilismo (activo, pasivo, reactivo)
+- Debe generar alertas cuando detecta problemas
+- Las métricas deben exportarse a Prometheus
+
+## Referencias
+
+### Documentación del Proyecto
+
+- **Contexto del Proyecto**: `docs/project-context.md` - Fuente única de verdad para contexto
+- **Diagramas UML**: `docs/uml-diagrams.md` - Diagramas completos de arquitectura
+- **Casos de Uso**: `docs/use-cases.md` - Casos de uso y flujos
+- **Actores**: `docs/actors.md` - Documentación de actores del sistema
+- **Estrategia de Branching**: `docs/branching-strategy.md` - Flujo de trabajo Git
+
+### Linear
+
+- **Proyecto**: https://linear.app/clasificadoria/project/sistema-de-generacion-de-valores-nietzscheano-bd208887ba46
+- **Epic de Diseño**: https://linear.app/clasificadoria/issue/DNT-224/epic-diseno-arquitectonico-y-diagramas
+
+### Recursos Filosóficos
+
+- Filosofía de Nietzsche (genealogía, nihilismo, creación de valores)
+- Concepto del "eterno retorno"
+- Personajes nietzscheanos: Zarathustra, Dionysus, Apollo, Last Man
+
+## Notas Importantes
+
+- **Sistema experimental**: Este es un sistema experimental que explora la creación de valores filosóficos
+- **Sin restricciones morales**: Por diseño filosófico, el sistema no tiene restricciones morales tradicionales
+- **Nihilismo como feature**: El nihilismo es una característica del sistema, no un bug
+- **Actualizar documentación**: Mantener esta documentación sincronizada con cambios arquitectónicos
+- **Consultar antes de cambiar**: Para cambios arquitectónicos importantes, consultar documentación en `docs/`
+
+## Comandos Útiles
+
+```bash
+# Desarrollo
+pnpm install          # Instalar dependencias
+pnpm dev              # Ejecutar en modo desarrollo
+pnpm build            # Compilar TypeScript
+pnpm test             # Ejecutar tests
+pnpm test:watch       # Tests en modo watch
+pnpm lint             # Linter
+pnpm type-check       # Verificar tipos
+
+# Docker
+docker-compose up      # Levantar servicios
+docker-compose down    # Detener servicios
+
+# Git
+git checkout -b docs/DNT-XXX-descripcion  # Crear rama
+```
+
+---
+
+**Última actualización**: 2026-01-11  
+**Versión**: 1.0
