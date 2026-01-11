@@ -3,474 +3,771 @@
 **Última actualización:** 2026-01-11  
 **Versión:** 1.0
 
-> **⚠️ IMPORTANTE:** Este documento define la estructura completa del proyecto. Debe ser consultado antes de crear cualquier archivo nuevo para mantener la organización y escalabilidad del proyecto.
+> **⚠️ IMPORTANTE:** Este documento define la estructura completa del proyecto, incluyendo organización de carpetas, archivos de configuración y convenciones. Debe ser consultado antes de crear cualquier archivo nuevo en el proyecto.
 
-## Estructura de Carpetas
+## Introducción
 
-### Estructura Completa
+Este documento describe la arquitectura y estructura completa del Sistema de Generación de Valores Nietzscheano. El proyecto implementa un sistema de IA experimental que genera valores filosóficos nuevos mediante un proceso de cuatro fases inspirado en la filosofía de Nietzsche.
+
+### Propósito del Documento
+
+- Definir la estructura completa de directorios y archivos del proyecto
+- Identificar todos los archivos de configuración necesarios
+- Establecer convenciones de organización y nomenclatura
+- Guiar la implementación futura del proyecto
+
+### Visión General de la Arquitectura
+
+El sistema está organizado en módulos funcionales que implementan:
+1. **Deconstrucción genealógica** de conceptos morales existentes
+2. **Fase nihilista** (vacío conceptual necesario)
+3. **Creación de valores genuinamente nuevos**
+4. **Evaluación** con criterio del "eterno retorno"
+
+La arquitectura utiliza:
+- Sistema multi-agente con personajes nietzscheanos
+- RAG (Retrieval-Augmented Generation) con corpus de Nietzsche
+- Procesamiento en background mediante colas
+- API REST para interacción externa
+- Monitoreo y métricas con Prometheus
+
+## Estructura de Directorios
+
+### Árbol Completo de Directorios
 
 ```
 IA-newvalue/
-├── .github/                    # Configuración de GitHub (workflows, templates)
-│   └── workflows/              # GitHub Actions workflows
-├── src/                        # Código fuente principal
-│   ├── config/                 # Configuración del sistema
-│   │   ├── env.ts             # Variables de entorno
-│   │   ├── logger.ts          # Configuración de logging (Pino)
-│   │   └── database.ts        # Configuración de conexiones DB
-│   ├── types/                  # Tipos TypeScript
-│   │   ├── result.ts          # Patrón Result<T, E>
-│   │   ├── value.ts           # Tipos de Value
-│   │   ├── phase.ts           # Tipos de Phase
-│   │   └── index.ts           # Exports centralizados
-│   ├── core/                   # Componentes core del sistema
-│   │   ├── orchestrator.ts    # Orchestrator principal
-│   │   ├── value-engine.ts    # ValueEngine con FSM
+├── src/                          # Código fuente principal
+│   ├── config/                   # Configuración del sistema
+│   │   ├── env.ts                # Variables de entorno
+│   │   ├── logger.ts             # Configuración de logging (Pino)
+│   │   └── database.ts           # Configuración de conexiones DB
+│   ├── types/                    # Tipos TypeScript compartidos
+│   │   ├── result.ts             # Tipo Result<T, E> para errores
+│   │   ├── value.ts              # Tipos relacionados con valores
+│   │   ├── phase.ts              # Tipos de fases del proceso
+│   │   └── index.ts              # Exports centralizados
+│   ├── core/                     # Componentes core del sistema
+│   │   ├── orchestrator.ts        # Orchestrator principal
+│   │   ├── value-engine.ts        # ValueEngine con FSM
 │   │   ├── dialectical-system.ts  # Sistema dialéctico
-│   │   └── nihilism-monitor.ts    # NihilismMonitor (Observer)
-│   ├── modules/                # Módulos de fases
-│   │   ├── deconstruction/    # Módulo de deconstrucción genealógica
-│   │   │   ├── index.ts
-│   │   │   └── genealogist.ts
-│   │   ├── nihilistic/        # Módulo de fase nihilista
-│   │   │   ├── index.ts
-│   │   │   └── nihilism-processor.ts
-│   │   ├── creative/          # Módulo de creación de valores
-│   │   │   ├── index.ts
-│   │   │   └── value-creator.ts
-│   │   └── evaluation/        # Módulo de evaluación (eterno retorno)
-│   │       ├── index.ts
-│   │       └── eternal-return-evaluator.ts
-│   ├── agents/                 # Agentes filosóficos
-│   │   ├── zarathustra.ts     # Agente Zarathustra
-│   │   ├── genealogist.ts     # Agente Genealogist
-│   │   ├── dionysus.ts        # Agente Dionysus
-│   │   ├── apollo.ts          # Agente Apollo
-│   │   ├── last-man.ts        # Agente LastMan
-│   │   └── base-agent.ts      # Clase base para agentes
-│   ├── llm/                    # Integración con LLM
-│   │   ├── client.ts          # Cliente LLM (OpenAI SDK)
-│   │   ├── lm-studio.ts       # Adaptador LM Studio
-│   │   ├── decorators.ts      # Decorators (cache, retry)
-│   │   └── prompts/           # Prompts del sistema
-│   │       ├── deconstruction.ts
-│   │       ├── nihilistic.ts
-│   │       ├── creative.ts
-│   │       └── evaluation.ts
-│   ├── embeddings/             # Sistema de embeddings
-│   │   ├── transformer.ts     # Transformers.js wrapper
-│   │   ├── encoder.ts         # Encoder de embeddings
+│   │   ├── nihilism-monitor.ts    # Monitor de nihilismo (Observer)
 │   │   └── index.ts
-│   ├── db/                     # Bases de datos
-│   │   ├── postgres/          # PostgreSQL con pgvector
-│   │   │   ├── client.ts
-│   │   │   ├── schema.ts      # Drizzle schema
-│   │   │   └── migrations/   # Migraciones
-│   │   ├── neo4j/             # Neo4j graph database
-│   │   │   ├── client.ts
-│   │   │   └── queries.ts
-│   │   └── redis/             # Redis (cache y colas)
-│   │       ├── client.ts
-│   │       └── cache.ts
-│   ├── rag/                    # Sistema RAG
-│   │   ├── document-processor.ts  # Procesador de documentos
-│   │   ├── chunker.ts         # Chunker de textos
-│   │   ├── retriever.ts       # Retriever de embeddings
-│   │   └── index.ts
-│   ├── monitoring/             # Monitoreo y métricas
-│   │   ├── prometheus.ts      # Métricas Prometheus
-│   │   ├── metrics.ts         # Definición de métricas
-│   │   └── health.ts           # Health checks
-│   ├── api/                    # API REST (Fastify)
-│   │   ├── server.ts          # Servidor Fastify
-│   │   ├── routes/            # Rutas de la API
-│   │   │   ├── values.ts      # Endpoints de valores
-│   │   │   ├── health.ts      # Health check endpoint
+│   ├── modules/                  # Módulos de las 4 fases
+│   │   ├── deconstruction/       # Módulo de deconstrucción
+│   │   │   ├── deconstruction.ts
 │   │   │   └── index.ts
-│   │   ├── middleware/         # Middleware
+│   │   ├── nihilistic/           # Módulo nihilista
+│   │   │   ├── nihilistic.ts
+│   │   │   └── index.ts
+│   │   ├── creative/             # Módulo creativo
+│   │   │   ├── creative.ts
+│   │   │   └── index.ts
+│   │   └── evaluation/           # Módulo de evaluación
+│   │       ├── evaluation.ts
+│   │       └── index.ts
+│   ├── agents/                   # Agentes filosóficos nietzscheanos
+│   │   ├── zarathustra.ts         # Agente Zarathustra
+│   │   ├── genealogist.ts         # Agente Genealogist
+│   │   ├── dionysus.ts            # Agente Dionysus
+│   │   ├── apollo.ts              # Agente Apollo
+│   │   ├── last-man.ts            # Agente LastMan
+│   │   └── index.ts
+│   ├── llm/                      # Integración con LLM
+│   │   ├── openai-client.ts        # Cliente OpenAI SDK
+│   │   ├── lm-studio-client.ts     # Cliente LM Studio local
+│   │   ├── decorators.ts          # Decorators (cache, retry)
+│   │   └── index.ts
+│   ├── embeddings/               # Sistema de embeddings
+│   │   ├── transformer-client.ts  # Cliente Transformers.js
+│   │   ├── embedding-service.ts   # Servicio de embeddings
+│   │   └── index.ts
+│   ├── db/                       # Bases de datos
+│   │   ├── postgres/              # PostgreSQL con pgvector
+│   │   │   ├── connection.ts
+│   │   │   ├── schema.ts          # Schema Drizzle
+│   │   │   └── migrations/
+│   │   ├── neo4j/                 # Neo4j graph database
+│   │   │   ├── connection.ts
+│   │   │   └── queries.ts
+│   │   └── redis/                # Redis (cache y colas)
+│   │       ├── connection.ts
+│   │       └── cache.ts
+│   ├── rag/                      # Sistema RAG
+│   │   ├── document-processor.ts  # Procesador de documentos
+│   │   ├── chunker.ts             # Chunker de texto
+│   │   ├── retriever.ts           # Retriever de embeddings
+│   │   └── index.ts
+│   ├── monitoring/                # Monitoreo y métricas
+│   │   ├── prometheus.ts          # Métricas Prometheus
+│   │   ├── metrics.ts             # Definición de métricas
+│   │   └── index.ts
+│   ├── api/                       # API REST (Fastify)
+│   │   ├── server.ts              # Servidor Fastify
+│   │   ├── routes/                # Rutas de la API
+│   │   │   ├── values.ts          # Rutas de valores
+│   │   │   ├── health.ts          # Health check
+│   │   │   └── index.ts
+│   │   ├── middleware/            # Middleware
 │   │   │   ├── error-handler.ts
 │   │   │   └── logger.ts
-│   │   └── types/             # Tipos de la API
-│   │       └── requests.ts
-│   ├── queues/                 # Colas de procesamiento (BullMQ)
-│   │   ├── queue-manager.ts   # Gestor de colas
-│   │   ├── jobs/              # Jobs de procesamiento
-│   │   │   ├── value-generation.ts
-│   │   │   └── index.ts
-│   │   └── workers/           # Workers
-│   │       └── value-worker.ts
-│   ├── utils/                  # Utilidades
-│   │   ├── errors.ts          # Manejo de errores
-│   │   ├── validation.ts      # Validación
-│   │   └── helpers.ts         # Funciones auxiliares
-│   └── index.ts                # Entry point principal
-├── data/                       # Datos del proyecto
-│   ├── corpus/                # Corpus de Nietzsche
-│   │   ├── raw/               # Textos originales
-│   │   └── processed/         # Textos procesados
-│   ├── prompts/               # Prompts del sistema
-│   │   ├── deconstruction.md
-│   │   ├── nihilistic.md
-│   │   ├── creative.md
-│   │   └── evaluation.md
-│   └── exports/               # Exports de datos generados
-├── tests/                      # Tests
-│   ├── unit/                  # Tests unitarios
+│   │   └── index.ts
+│   ├── queues/                   # Colas de procesamiento (BullMQ)
+│   │   ├── queue-config.ts        # Configuración de colas
+│   │   ├── value-generation-job.ts # Job de generación
+│   │   └── index.ts
+│   └── utils/                    # Utilidades compartidas
+│       ├── validation.ts
+│       ├── formatting.ts
+│       └── index.ts
+├── data/                         # Datos del proyecto
+│   ├── corpus/                   # Corpus de Nietzsche
+│   │   ├── texts/                # Textos originales
+│   │   └── processed/            # Textos procesados
+│   ├── prompts/                  # Prompts del sistema
+│   │   ├── deconstruction/
+│   │   ├── nihilistic/
+│   │   ├── creative/
+│   │   └── evaluation/
+│   └── exports/                  # Exports y datos generados
+│       └── values/               # Valores generados
+├── tests/                        # Tests
+│   ├── unit/                     # Tests unitarios
 │   │   ├── core/
 │   │   ├── modules/
 │   │   ├── agents/
 │   │   └── utils/
-│   ├── integration/           # Tests de integración
+│   ├── integration/              # Tests de integración
 │   │   ├── api/
 │   │   ├── db/
 │   │   └── queues/
-│   ├── fixtures/              # Datos de prueba
-│   └── helpers/               # Helpers para tests
-├── scripts/                    # Scripts de utilidad
-│   ├── setup/                 # Scripts de setup
-│   ├── migration/             # Scripts de migración
-│   └── seed/                  # Scripts de seed
-├── docs/                       # Documentación
-│   ├── project-context.md     # Contexto del proyecto
-│   ├── architecture.md        # Este documento
-│   └── api/                   # Documentación de API
+│   └── fixtures/                 # Fixtures y datos de prueba
+│       ├── values.ts
+│       └── corpus.ts
+├── scripts/                      # Scripts de utilidad
+│   ├── setup/                    # Scripts de configuración
+│   │   ├── init-db.ts
+│   │   └── seed-data.ts
+│   ├── migration/                # Scripts de migración
+│   │   └── run-migrations.ts
+│   └── seed/                      # Scripts de seed
+│       └── seed-corpus.ts
+├── docs/                         # Documentación
+│   ├── architecture.md           # Este documento
+│   ├── project-context.md        # Contexto del proyecto
+│   └── api/                      # Documentación de API
 │       └── endpoints.md
-├── .env.example               # Ejemplo de variables de entorno
-├── .gitignore                 # Git ignore
-├── package.json               # Dependencias y scripts
-├── pnpm-lock.yaml             # Lock file de pnpm
-├── tsconfig.json              # Configuración TypeScript
-├── tsconfig.build.json        # Configuración TypeScript para build
-├── vitest.config.ts           # Configuración Vitest
-├── drizzle.config.ts         # Configuración Drizzle ORM
-├── prometheus.yml             # Configuración Prometheus
-├── docker-compose.yml         # Docker Compose para servicios
-├── Dockerfile                 # Dockerfile para la aplicación
-└── README.md                   # README principal
+├── .github/                      # Configuración de GitHub
+│   └── workflows/                # GitHub Actions
+│       ├── ci.yml                # CI/CD
+│       └── test.yml
+└── [archivos de configuración en raíz]
 ```
 
-## Descripción Detallada de Carpetas
+## Estructura Detallada de `src/`
 
-### `src/` - Código Fuente Principal
+### `src/config/`
 
-#### `src/config/`
 **Propósito:** Configuración centralizada del sistema.
 
 **Archivos:**
-- `env.ts`: Carga y validación de variables de entorno
-- `logger.ts`: Configuración de logging con Pino
-- `database.ts`: Configuración de conexiones a bases de datos
+- `env.ts` - Carga y validación de variables de entorno
+- `logger.ts` - Configuración de Pino logger
+- `database.ts` - Configuración de conexiones a PostgreSQL, Neo4j y Redis
 
-#### `src/types/`
-**Propósito:** Definiciones de tipos TypeScript compartidas.
+**Responsabilidades:**
+- Cargar variables de entorno desde `.env`
+- Validar configuración al inicio
+- Exportar configuración tipada para el resto del sistema
 
-**Archivos:**
-- `result.ts`: Implementación del patrón `Result<T, E>` para manejo de errores
-- `value.ts`: Tipos relacionados con valores generados
-- `phase.ts`: Tipos relacionados con las fases del proceso
-- `index.ts`: Exports centralizados de todos los tipos
+### `src/types/`
 
-#### `src/core/`
-**Propósito:** Componentes core del sistema que orquestan el proceso.
+**Propósito:** Tipos TypeScript compartidos en todo el proyecto.
 
 **Archivos:**
-- `orchestrator.ts`: Orquestador principal que coordina las fases
-- `value-engine.ts`: Motor de generación de valores con FSM (Máquina de Estados Finitos)
-- `dialectical-system.ts`: Sistema dialéctico para el proceso de creación
-- `nihilism-monitor.ts`: Monitor que observa y clasifica fases nihilistas (Observer Pattern)
+- `result.ts` - Tipo `Result<T, E>` para manejo funcional de errores
+- `value.ts` - Tipos `Value`, `ValuePhase`, `ValueMetadata`
+- `phase.ts` - Tipos `Phase`, `PhaseState`, `PhaseTransition`
+- `index.ts` - Exports centralizados
 
-#### `src/modules/`
-**Propósito:** Módulos que implementan cada fase del proceso.
+**Convenciones:**
+- Todos los tipos deben ser exportados desde `index.ts`
+- Usar tipos estrictos, evitar `any`
+- Documentar tipos complejos con JSDoc
 
-**Subcarpetas:**
-- `deconstruction/`: Módulo de deconstrucción genealógica
-- `nihilistic/`: Módulo de fase nihilista
-- `creative/`: Módulo de creación de valores nuevos
-- `evaluation/`: Módulo de evaluación con criterio del "eterno retorno"
+### `src/core/`
 
-#### `src/agents/`
-**Propósito:** Agentes filosóficos que representan diferentes perspectivas nietzscheanas.
+**Propósito:** Componentes core que orquestan el sistema.
 
-**Archivos:**
-- `base-agent.ts`: Clase base para todos los agentes
-- `zarathustra.ts`: Agente Zarathustra (perspectiva del superhombre)
-- `genealogist.ts`: Agente Genealogist (deconstrucción genealógica)
-- `dionysus.ts`: Agente Dionysus (creatividad dionisíaca)
-- `apollo.ts`: Agente Apollo (orden y estructura)
-- `last-man.ts`: Agente LastMan (perspectiva del último hombre)
+**Componentes principales:**
+- **Orchestrator** - Coordina el flujo completo de generación de valores
+- **ValueEngine** - Motor principal con FSM para gestionar estados
+- **DialecticalSystem** - Sistema dialéctico para síntesis de ideas
+- **NihilismMonitor** - Monitor que observa y clasifica fases nihilistas (Observer pattern)
 
-#### `src/llm/`
+**Relaciones:**
+- `Orchestrator` usa `ValueEngine` para gestionar el proceso
+- `ValueEngine` coordina los módulos de fases
+- `NihilismMonitor` observa todas las fases para detectar nihilismo
+- `DialecticalSystem` proporciona síntesis dialéctica
+
+### `src/modules/`
+
+**Propósito:** Módulos que implementan las 4 fases del proceso.
+
+**Módulos:**
+1. **deconstruction/** - Deconstrucción genealógica de valores existentes
+2. **nihilistic/** - Fase nihilista (vacío conceptual)
+3. **creative/** - Creación de valores nuevos
+4. **evaluation/** - Evaluación con criterio del "eterno retorno"
+
+**Estructura de cada módulo:**
+- Archivo principal con la lógica del módulo
+- `index.ts` para exports
+- Cada módulo recibe input del módulo anterior
+- Cada módulo produce output para el siguiente
+
+### `src/agents/`
+
+**Propósito:** Agentes filosóficos con diferentes perspectivas nietzscheanas.
+
+**Agentes:**
+- **Zarathustra** - Perspectiva del superhombre, creación de valores
+- **Genealogist** - Análisis genealógico de valores
+- **Dionysus** - Perspectiva dionisíaca, creatividad y caos
+- **Apollo** - Perspectiva apolínea, orden y forma
+- **LastMan** - Perspectiva del último hombre, mediocridad
+
+**Responsabilidades:**
+- Cada agente tiene su propia perspectiva filosófica
+- Los agentes participan en diferentes fases del proceso
+- Los agentes generan contenido usando LLM con prompts específicos
+
+### `src/llm/`
+
 **Propósito:** Integración con modelos de lenguaje.
 
-**Archivos:**
-- `client.ts`: Cliente LLM usando OpenAI SDK
-- `lm-studio.ts`: Adaptador para LM Studio local
-- `decorators.ts`: Decorators para cache y retry
-- `prompts/`: Carpeta con prompts específicos por fase
+**Componentes:**
+- `openai-client.ts` - Cliente para OpenAI API
+- `lm-studio-client.ts` - Cliente para LM Studio local
+- `decorators.ts` - Decorators para cache y retry
 
-#### `src/embeddings/`
+**Características:**
+- Decorators para cache de respuestas
+- Decorators para retry automático
+- Abstracción común para ambos clientes
+
+### `src/embeddings/`
+
 **Propósito:** Sistema de embeddings para RAG.
 
-**Archivos:**
-- `transformer.ts`: Wrapper para Transformers.js
-- `encoder.ts`: Encoder de embeddings
-- `index.ts`: Exports
+**Componentes:**
+- `transformer-client.ts` - Cliente Transformers.js
+- `embedding-service.ts` - Servicio que genera embeddings
 
-#### `src/db/`
+**Responsabilidades:**
+- Generar embeddings de texto usando Transformers.js
+- Procesar corpus de Nietzsche para embeddings
+- Proporcionar embeddings para búsqueda semántica
+
+### `src/db/`
+
 **Propósito:** Integración con bases de datos.
 
-**Subcarpetas:**
-- `postgres/`: PostgreSQL con pgvector (vector database)
-- `neo4j/`: Neo4j (graph database)
-- `redis/`: Redis (cache y colas)
+**Bases de datos:**
+- **postgres/** - PostgreSQL 15+ con pgvector para vectores
+- **neo4j/** - Neo4j 5.x para relaciones gráficas
+- **redis/** - Redis 7.x para cache y colas
 
-#### `src/rag/`
-**Propósito:** Sistema RAG (Retrieval-Augmented Generation) con corpus de Nietzsche.
+**Estructura:**
+- Cada base de datos tiene su carpeta con `connection.ts`
+- PostgreSQL usa Drizzle ORM con schema en `schema.ts`
+- Migraciones en `postgres/migrations/`
 
-**Archivos:**
-- `document-processor.ts`: Procesador de documentos
-- `chunker.ts`: Chunker de textos para embeddings
-- `retriever.ts`: Retriever de embeddings similares
-- `index.ts`: Exports
+### `src/rag/`
 
-#### `src/monitoring/`
+**Propósito:** Sistema RAG (Retrieval-Augmented Generation).
+
+**Componentes:**
+- `document-processor.ts` - Procesa documentos del corpus
+- `chunker.ts` - Divide texto en chunks
+- `retriever.ts` - Recupera chunks relevantes usando embeddings
+
+**Flujo:**
+1. Procesar corpus de Nietzsche
+2. Generar embeddings de chunks
+3. Almacenar en PostgreSQL con pgvector
+4. Recuperar chunks relevantes para contexto
+
+### `src/monitoring/`
+
 **Propósito:** Monitoreo y métricas del sistema.
 
-**Archivos:**
-- `prometheus.ts`: Integración con Prometheus
-- `metrics.ts`: Definición de métricas
-- `health.ts`: Health checks
+**Componentes:**
+- `prometheus.ts` - Configuración de Prometheus
+- `metrics.ts` - Definición de métricas
 
-#### `src/api/`
-**Propósito:** API REST usando Fastify.
+**Métricas a rastrear:**
+- Número de valores generados
+- Tiempo de procesamiento por fase
+- Frecuencia de fases nihilistas
+- Errores y excepciones
 
-**Estructura:**
-- `server.ts`: Servidor Fastify principal
-- `routes/`: Rutas de la API
-- `middleware/`: Middleware (error handling, logging)
-- `types/`: Tipos específicos de la API
+### `src/api/`
 
-#### `src/queues/`
-**Propósito:** Colas de procesamiento con BullMQ.
+**Propósito:** API REST para interacción externa.
 
 **Estructura:**
-- `queue-manager.ts`: Gestor de colas
-- `jobs/`: Definición de jobs
-- `workers/`: Workers que procesan los jobs
+- `server.ts` - Servidor Fastify principal
+- `routes/` - Rutas de la API
+  - `values.ts` - Endpoints para valores
+  - `health.ts` - Health check
+- `middleware/` - Middleware personalizado
+  - `error-handler.ts` - Manejo de errores
+  - `logger.ts` - Logging de requests
 
-#### `src/utils/`
+**Endpoints principales:**
+- `POST /api/values/generate` - Generar nuevo valor
+- `GET /api/values/:id` - Obtener valor por ID
+- `GET /api/health` - Health check
+
+### `src/queues/`
+
+**Propósito:** Procesamiento en background con BullMQ.
+
+**Componentes:**
+- `queue-config.ts` - Configuración de colas
+- `value-generation-job.ts` - Job para generación de valores
+
+**Uso:**
+- Generación de valores se procesa en background
+- Colas Redis para gestión de jobs
+- Retry automático en caso de fallos
+
+### `src/utils/`
+
 **Propósito:** Utilidades compartidas.
 
-**Archivos:**
-- `errors.ts`: Manejo de errores
-- `validation.ts`: Validación de datos
-- `helpers.ts`: Funciones auxiliares
-
-### `data/` - Datos del Proyecto
-
-#### `data/corpus/`
-**Propósito:** Corpus de textos de Nietzsche.
-
-**Subcarpetas:**
-- `raw/`: Textos originales sin procesar
-- `processed/`: Textos procesados y listos para RAG
-
-#### `data/prompts/`
-**Propósito:** Prompts del sistema en formato Markdown.
-
-**Archivos:**
-- `deconstruction.md`: Prompts de deconstrucción
-- `nihilistic.md`: Prompts de fase nihilista
-- `creative.md`: Prompts de creación
-- `evaluation.md`: Prompts de evaluación
-
-#### `data/exports/`
-**Propósito:** Exports de datos generados por el sistema.
-
-### `tests/` - Tests
-
-#### `tests/unit/`
-**Propósito:** Tests unitarios de componentes individuales.
-
-**Estructura:**
-- `core/`: Tests de componentes core
-- `modules/`: Tests de módulos
-- `agents/`: Tests de agentes
-- `utils/`: Tests de utilidades
-
-#### `tests/integration/`
-**Propósito:** Tests de integración entre componentes.
-
-**Estructura:**
-- `api/`: Tests de API
-- `db/`: Tests de bases de datos
-- `queues/`: Tests de colas
-
-#### `tests/fixtures/`
-**Propósito:** Datos de prueba y fixtures.
-
-#### `tests/helpers/`
-**Propósito:** Helpers y utilidades para tests.
-
-### `scripts/` - Scripts de Utilidad
-
-#### `scripts/setup/`
-**Propósito:** Scripts de configuración inicial del proyecto.
-
-#### `scripts/migration/`
-**Propósito:** Scripts de migración de bases de datos.
-
-#### `scripts/seed/`
-**Propósito:** Scripts para poblar bases de datos con datos iniciales.
-
-### `docs/` - Documentación
-
-**Archivos:**
-- `project-context.md`: Contexto del proyecto (fuente única de verdad)
-- `architecture.md`: Este documento (estructura del proyecto)
-- `api/endpoints.md`: Documentación de endpoints de la API
+**Utilidades:**
+- `validation.ts` - Validación de datos
+- `formatting.ts` - Formateo de texto y datos
 
 ## Archivos de Configuración
 
-### `package.json`
+### Configuración de Node.js/TypeScript
+
+#### `package.json`
+
 **Propósito:** Dependencias y scripts del proyecto.
 
 **Dependencias principales:**
-- `fastify`: Framework web
-- `openai`: SDK de OpenAI
-- `@xenova/transformers`: Embeddings
-- `drizzle-orm`: ORM
-- `bullmq`: Sistema de colas
-- `vitest`: Testing framework
-- `pino`: Logging
-- `prom-client`: Métricas Prometheus
+- **Runtime:** Node.js 20 LTS
+- **Lenguaje:** TypeScript 5.3+
+- **Package Manager:** pnpm
 
-### `tsconfig.json`
-**Propósito:** Configuración TypeScript con modo strict.
+**Dependencias de producción:**
+- `fastify` - Framework web
+- `@openai/api` - OpenAI SDK
+- `@xenova/transformers` - Transformers.js para embeddings
+- `drizzle-orm` - ORM para PostgreSQL
+- `drizzle-kit` - CLI para Drizzle
+- `bullmq` - Sistema de colas
+- `ioredis` - Cliente Redis
+- `neo4j-driver` - Driver Neo4j
+- `pg` y `pgvector` - PostgreSQL con vectores
+- `pino` - Logging
+- `prom-client` - Métricas Prometheus
+
+**Dependencias de desarrollo:**
+- `typescript` - Compilador TypeScript
+- `vitest` - Framework de testing
+- `@types/node` - Tipos de Node.js
+- `tsx` - Ejecutar TypeScript directamente
+
+**Scripts principales:**
+- `dev` - Ejecutar en modo desarrollo
+- `build` - Compilar TypeScript
+- `test` - Ejecutar tests
+- `test:watch` - Tests en modo watch
+- `lint` - Linter
+- `migrate` - Ejecutar migraciones
+
+#### `tsconfig.json`
+
+**Propósito:** Configuración de TypeScript en modo strict.
 
 **Configuración clave:**
-- `strict: true`
-- `target: ES2022`
-- `module: ESNext`
-- `moduleResolution: bundler`
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022"],
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "tests"]
+}
+```
 
-### `tsconfig.build.json`
-**Propósito:** Configuración TypeScript específica para builds de producción.
+#### `tsconfig.build.json`
 
-### `vitest.config.ts`
+**Propósito:** Configuración específica para build de producción.
+
+**Extiende:** `tsconfig.json` con configuraciones optimizadas para producción.
+
+### Configuración de Testing
+
+#### `vitest.config.ts`
+
 **Propósito:** Configuración de Vitest para tests.
 
-### `drizzle.config.ts`
-**Propósito:** Configuración de Drizzle ORM para migraciones y queries.
+**Configuración:**
+- Paths para imports
+- Setup de tests
+- Coverage configuration
+- Entorno de testing
 
-### `prometheus.yml`
-**Propósito:** Configuración de Prometheus para métricas.
+#### `vitest.setup.ts`
 
-### `docker-compose.yml`
-**Propósito:** Configuración de servicios con Docker Compose.
-
-**Servicios incluidos:**
-- PostgreSQL 15+ con pgvector
-- Neo4j 5.x
-- Redis 7.x
-- Prometheus
-- Grafana
-
-### `.env.example`
-**Propósito:** Ejemplo de variables de entorno necesarias.
-
-**Variables principales:**
-- `DATABASE_URL`: URL de PostgreSQL
-- `NEO4J_URI`: URI de Neo4j
-- `REDIS_URL`: URL de Redis
-- `OPENAI_API_KEY`: API key de OpenAI (o LM Studio)
-- `LM_STUDIO_URL`: URL de LM Studio local
-- `NODE_ENV`: Entorno (development, production)
-
-### `.gitignore`
-**Propósito:** Archivos y carpetas ignorados por Git.
+**Propósito:** Setup global para tests.
 
 **Incluye:**
+- Mocks globales
+- Configuración de entorno de test
+- Helpers compartidos
+
+### Configuración de Base de Datos
+
+#### `drizzle.config.ts`
+
+**Propósito:** Configuración de Drizzle ORM.
+
+**Configuración:**
+- Conexión a PostgreSQL
+- Ubicación de schema
+- Ubicación de migraciones
+- Output de migraciones
+
+#### `docker-compose.yml`
+
+**Propósito:** Servicios Docker para desarrollo local.
+
+**Servicios:**
+- **postgres** - PostgreSQL 15+ con extensión pgvector
+- **neo4j** - Neo4j 5.x graph database
+- **redis** - Redis 7.x para cache y colas
+- **prometheus** - Prometheus para métricas
+- **grafana** - Grafana para visualización
+
+**Puertos:**
+- PostgreSQL: 5432
+- Neo4j: 7474 (HTTP), 7687 (Bolt)
+- Redis: 6379
+- Prometheus: 9090
+- Grafana: 3000
+
+### Configuración de Monitoreo
+
+#### `prometheus.yml`
+
+**Propósito:** Configuración de Prometheus.
+
+**Incluye:**
+- Configuración de scraping
+- Targets a monitorear
+- Reglas de alertas (si aplica)
+
+### Configuración de Entorno
+
+#### `.env.example`
+
+**Propósito:** Plantilla de variables de entorno.
+
+**Variables principales:**
+- `NODE_ENV` - Entorno (development, production, test)
+- `PORT` - Puerto del servidor API
+- `DATABASE_URL` - URL de PostgreSQL
+- `NEO4J_URI` - URI de Neo4j
+- `NEO4J_USER` - Usuario Neo4j
+- `NEO4J_PASSWORD` - Contraseña Neo4j
+- `REDIS_URL` - URL de Redis
+- `OPENAI_API_KEY` - API key de OpenAI (opcional)
+- `LM_STUDIO_URL` - URL de LM Studio local
+- `LOG_LEVEL` - Nivel de logging
+
+#### `.env.local`
+
+**Propósito:** Variables de entorno locales (en `.gitignore`).
+
+**Uso:** Cada desarrollador crea su propio `.env.local` basado en `.env.example`.
+
+### Otros Archivos de Configuración
+
+#### `.gitignore`
+
+**Propósito:** Archivos y carpetas a ignorar por Git.
+
+**Ya existe** (creado en DNT-231) con exclusiones para:
 - `node_modules/`
-- `.env`
-- `dist/`
-- `build/`
-- Logs
-- Archivos temporales
+- `.env`, `.env.local`
+- `dist/`, `build/`
+- Logs y archivos temporales
 
-## Convenciones de Organización
+#### `.editorconfig`
 
-### Nomenclatura de Archivos
+**Propósito:** Configuración consistente del editor.
 
-- **Archivos TypeScript:** `kebab-case.ts` (ej: `value-engine.ts`)
-- **Carpetas:** `kebab-case` (ej: `value-engine/`)
-- **Clases:** `PascalCase` (ej: `ValueEngine`)
-- **Funciones/variables:** `camelCase` (ej: `generateValue`)
-- **Constantes:** `UPPER_SNAKE_CASE` (ej: `MAX_RETRIES`)
+**Incluye:**
+- Indentación (espacios vs tabs)
+- Tamaño de indentación
+- Encoding de archivos
+- Finales de línea
 
-### Estructura de Módulos
+#### `.prettierrc` (Opcional)
 
-Cada módulo debe tener:
-- `index.ts`: Exports principales del módulo
-- Archivos de implementación con nombres descriptivos
-- Tests correspondientes en `tests/`
+**Propósito:** Configuración de Prettier para formateo.
 
-### Imports
+**Si se usa:**
+- Configuración de formateo
+- Integración con ESLint
 
-- Usar imports absolutos desde `src/` cuando sea posible
-- Agrupar imports: externos, internos, tipos
-- Usar `type` para imports de tipos
+#### `.eslintrc.json` (Opcional)
 
-### Exports
+**Propósito:** Configuración de ESLint.
 
-- Cada carpeta debe tener un `index.ts` que exporte los elementos públicos
-- Usar named exports en lugar de default exports cuando sea posible
+**Si se usa:**
+- Reglas de linting
+- Integración con TypeScript
+- Reglas personalizadas del proyecto
 
-## Flujo de Trabajo con la Estructura
+#### `README.md`
 
-### Crear un Nuevo Módulo
+**Propósito:** Documentación principal del proyecto.
 
-1. Crear carpeta en `src/modules/` o `src/agents/`
-2. Crear `index.ts` con exports
-3. Implementar archivos necesarios
-4. Crear tests en `tests/unit/` o `tests/integration/`
-5. Actualizar documentación si es necesario
+**Debe incluir:**
+- Descripción del proyecto
+- Instrucciones de instalación
+- Guía de uso
+- Estructura del proyecto (referencia a este documento)
+- Contribución
 
-### Añadir un Nuevo Agente
+## Convenciones de Código
 
-1. Crear archivo en `src/agents/`
-2. Extender `base-agent.ts`
-3. Implementar métodos específicos del agente
-4. Crear tests en `tests/unit/agents/`
-5. Documentar el agente
+### Estructura de Archivos TypeScript
 
-### Añadir un Nuevo Endpoint de API
+**Convenciones:**
+- Un archivo por clase/función principal
+- Archivos en camelCase: `valueEngine.ts`, `nihilismMonitor.ts`
+- Clases en PascalCase: `ValueEngine`, `NihilismMonitor`
+- Interfaces en PascalCase: `Value`, `Phase`
+- Tipos en PascalCase: `Result<T, E>`
 
-1. Crear ruta en `src/api/routes/`
-2. Añadir middleware si es necesario
-3. Crear tipos en `src/api/types/`
-4. Crear tests en `tests/integration/api/`
-5. Documentar en `docs/api/endpoints.md`
+**Ejemplo de estructura de archivo:**
+```typescript
+// Imports externos primero
+import { FastifyInstance } from 'fastify';
 
-## Validación de la Estructura
+// Imports internos después
+import { ValueEngine } from '../core/value-engine';
+import { Result } from '../types/result';
 
-Antes de considerar la estructura completa, verificar:
+// Tipos e interfaces
+interface ValueRequest {
+  // ...
+}
 
-- [ ] Todas las carpetas principales están definidas
-- [ ] Todos los archivos de configuración están identificados
-- [ ] La estructura es escalable y mantenible
-- [ ] Las convenciones están claramente definidas
-- [ ] El flujo de trabajo está documentado
+// Implementación
+export class ValueService {
+  // ...
+}
+
+// Exports
+export { ValueService };
+```
+
+### Nombres de Archivos y Carpetas
+
+**Carpetas:**
+- En minúsculas: `src/core/`, `src/modules/`
+- Nombres descriptivos y cortos
+- Plural para colecciones: `agents/`, `modules/`
+
+**Archivos:**
+- camelCase para archivos de código: `valueEngine.ts`
+- kebab-case para archivos de configuración: `vitest.config.ts`
+- `index.ts` para exports centralizados
+
+### Patrones de Organización
+
+**Módulos:**
+- Cada módulo tiene su carpeta
+- `index.ts` exporta la API pública del módulo
+- Implementación interna en archivos separados
+
+**Imports:**
+- Imports absolutos desde `src/` usando paths en `tsconfig.json`
+- Evitar imports relativos profundos (`../../../`)
+- Usar barrel exports (`index.ts`) cuando sea apropiado
+
+**Ejemplo de paths en `tsconfig.json`:**
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/core/*": ["./src/core/*"]
+    }
+  }
+}
+```
+
+### Patrones de Diseño
+
+**Patrones utilizados:**
+- **Result<T, E>** - Manejo funcional de errores
+- **FSM (Finite State Machine)** - Para ValueEngine
+- **Observer Pattern** - Para NihilismMonitor
+- **Strategy Pattern** - Para prompts de diferentes agentes
+- **Decorators** - Para cache y retry en LLM clients
+
+## Dependencias y Tecnologías
+
+### Stack Tecnológico Completo
+
+**Runtime y Lenguaje:**
+- Node.js 20 LTS
+- TypeScript 5.3+ (strict mode)
+- pnpm (package manager)
+
+**Backend:**
+- Fastify - Framework web rápido
+- OpenAI SDK → LM Studio local - LLM
+- Transformers.js (@xenova/transformers) - Embeddings
+- Drizzle ORM - ORM para PostgreSQL
+- BullMQ - Sistema de colas
+- ioredis - Cliente Redis
+- neo4j-driver - Driver Neo4j
+- pg + pgvector - PostgreSQL con vectores
+
+**Testing y Calidad:**
+- Vitest - Framework de testing
+- Pino - Logging estructurado
+- prom-client - Métricas Prometheus
+
+**Infraestructura:**
+- Docker Compose - Orquestación de servicios
+- PostgreSQL 15+ - Base de datos relacional con vectores
+- Neo4j 5.x - Base de datos gráfica
+- Redis 7.x - Cache y colas
+- Prometheus - Métricas
+- Grafana - Visualización
+
+### Versiones Requeridas
+
+**Node.js:** 20.x LTS (mínimo 20.0.0)  
+**TypeScript:** 5.3+  
+**pnpm:** 8.x+  
+
+**Bases de datos:**
+- PostgreSQL: 15+
+- Neo4j: 5.x
+- Redis: 7.x
+
+### Dependencias Principales por Categoría
+
+**Framework Web:**
+- `fastify` - Framework web
+- `@fastify/cors` - CORS
+- `@fastify/helmet` - Seguridad
+
+**LLM y Embeddings:**
+- `openai` - OpenAI SDK
+- `@xenova/transformers` - Transformers.js
+
+**Bases de Datos:**
+- `drizzle-orm` - ORM
+- `drizzle-kit` - CLI
+- `pg` - PostgreSQL driver
+- `pgvector` - Extensión de vectores
+- `neo4j-driver` - Neo4j driver
+- `ioredis` - Redis client
+
+**Colas:**
+- `bullmq` - Sistema de colas
+- `ioredis` - Backend de Redis
+
+**Logging y Monitoreo:**
+- `pino` - Logging
+- `prom-client` - Métricas
+
+**Testing:**
+- `vitest` - Testing framework
+- `@vitest/ui` - UI de tests
+
+## Relaciones entre Módulos
+
+### Flujo Principal
+
+```
+Orchestrator
+    ↓
+ValueEngine (FSM)
+    ↓
+┌─────────────────────────────────────┐
+│  Deconstruction Module               │
+│  → Nihilistic Module                 │
+│  → Creative Module                   │
+│  → Evaluation Module                 │
+└─────────────────────────────────────┘
+    ↓
+NihilismMonitor (Observer)
+    ↓
+RAG System (contexto)
+    ↓
+Agents (Zarathustra, Genealogist, etc.)
+    ↓
+LLM (OpenAI/LM Studio)
+```
+
+### Dependencias entre Carpetas
+
+- `core/` depende de: `types/`, `modules/`, `agents/`, `llm/`, `rag/`
+- `modules/` depende de: `types/`, `agents/`, `llm/`, `rag/`
+- `agents/` depende de: `types/`, `llm/`
+- `api/` depende de: `core/`, `types/`
+- `queues/` depende de: `core/`, `types/`
+- `rag/` depende de: `embeddings/`, `db/postgres/`
 
 ## Próximos Pasos
 
-Una vez validada esta estructura:
+Una vez definida esta estructura, los siguientes pasos son:
 
-1. Crear los archivos de configuración base
-2. Inicializar las carpetas principales
-3. Configurar las herramientas de desarrollo
-4. Comenzar la implementación siguiendo esta estructura
+1. **Crear archivos de configuración** - `package.json`, `tsconfig.json`, etc.
+2. **Crear estructura de carpetas** - Crear todas las carpetas definidas
+3. **Implementar tipos base** - `src/types/` con tipos fundamentales
+4. **Implementar componentes core** - Empezar con `src/core/`
+5. **Implementar módulos de fases** - `src/modules/`
+6. **Implementar agentes** - `src/agents/`
+7. **Implementar API** - `src/api/`
+8. **Configurar infraestructura** - Docker Compose, bases de datos
+
+## Referencias
+
+- [Contexto del Proyecto](./project-context.md) - Contexto completo del proyecto
+- [Issue DNT-225](https://linear.app/clasificadoria/issue/DNT-225/docs-definir-estructura-completa-del-proyecto) - Issue que define esta estructura
 
 ---
 
-**Nota:** Esta estructura debe mantenerse actualizada conforme el proyecto evoluciona. Cualquier cambio significativo debe ser documentado y comunicado al equipo.
+**Nota:** Esta estructura debe mantenerse actualizada a medida que el proyecto evoluciona. Cualquier cambio significativo debe ser documentado aquí.
