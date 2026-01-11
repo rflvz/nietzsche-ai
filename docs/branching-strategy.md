@@ -48,6 +48,37 @@ Se ha elegido **GitHub Flow** como estrategia de branching para este proyecto po
   - Dificulta trabajo en paralelo
   - No integra bien con Linear/issues
 
+### Diagrama Visual del Flujo
+
+El siguiente diagrama ilustra el flujo de trabajo de GitHub Flow:
+
+```mermaid
+graph TD
+    A[main branch] -->|Crear branch| B[feature/fix/docs branch]
+    B -->|Desarrollo| C[Commits en branch]
+    C -->|Push| D[Branch en GitHub]
+    D -->|Crear PR| E[Pull Request]
+    E -->|Revisión| F{¿Aprobado?}
+    F -->|No| C
+    F -->|Sí| G[Merge a main]
+    G -->|Deploy| H[Producción]
+    H -->|Nuevo trabajo| A
+    
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style E fill:#e8f5e9
+    style G fill:#f3e5f5
+    style H fill:#e8f5e9
+```
+
+**Flujo simplificado:**
+1. Crear branch desde `main`
+2. Desarrollar y hacer commits
+3. Crear Pull Request
+4. Revisar y aprobar
+5. Mergear a `main`
+6. Deploy a producción
+
 ## Estructura de Branches
 
 ### Branch Principal
