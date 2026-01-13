@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramas UML - Sistema de Generación de Valores Nietzscheano</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #f7fafc;
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #4a5568;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: white;
+            border: 2px solid #cbd5e0;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 100px;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        section p {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .diagram-container {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .mermaid {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .note {
+            background: #fff5e6;
+            border-left: 4px solid #ffa500;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: #d97706;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                text-align: center;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Diagramas UML del Sistema</h1>
+            <p>Sistema de Generación de Valores Nietzscheano</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Versión 1.0 | Última actualización: 2026-01-11</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#intro">Introducción</a></li>
+                <li><a href="#clases">Diagrama de Clases</a></li>
+                <li><a href="#componentes">Diagrama de Componentes</a></li>
+                <li><a href="#secuencia">Diagrama de Secuencia</a></li>
+                <li><a href="#estados">Diagrama de Estados</a></li>
+                <li><a href="#despliegue">Diagrama de Despliegue</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="intro">
+                <h2>📖 Introducción</h2>
+                <p>Los diagramas UML son esenciales para visualizar y comunicar la arquitectura del sistema antes de la implementación. Este documento incluye todos los diagramas UML necesarios para entender la estructura, relaciones, flujos y despliegue del sistema.</p>
+
+                <div class="note">
+                    <strong>Nota:</strong> Este documento contiene los diagramas UML completos del Sistema de Generación de Valores Nietzscheano, incluyendo diagramas de clases, componentes, secuencia, estados y despliegue.
+                </div>
+
+                <p><strong>Diagramas incluidos:</strong></p>
+                <ol style="margin-left: 20px; color: #4a5568;">
+                    <li>Diagrama de Clases - Estructura de clases y relaciones</li>
+                    <li>Diagrama de Componentes - Componentes principales e interfaces</li>
+                    <li>Diagrama de Secuencia - Flujos de interacción</li>
+                    <li>Diagrama de Estados - Máquina de estados finitos (FSM)</li>
+                    <li>Diagrama de Despliegue - Arquitectura de despliegue</li>
+                </ol>
+            </section>
+
+            <section id="clases">
+                <h2>🏗️ 1. Diagrama de Clases</h2>
+                <p>El diagrama de clases muestra la estructura estática del sistema, incluyendo clases principales, módulos, agentes, interfaces y sus relaciones.</p>
+
+                <div class="diagram-container">
+                    <div class="mermaid">
+classDiagram
+    %% Core Classes
+    class Orchestrator {
+        -valueEngine: ValueEngine
+        -dialecticalSystem: DialecticalSystem
+        -ragSystem: RAGSystem
+        -nihilismMonitor: NihilismMonitor
+        +generateValue(concept: string): Promise~Result~Value, Error~~
+        +coordinatePhase(phase: Phase): Promise~void~
+        +handleError(error: Error): void
+    }
+
+    class ValueEngine {
+        -currentState: ValueState
+        -stateHistory: ValueState[]
+        +transitionTo(state: ValueState): Result~void, Error~
+        +validateTransition(from: ValueState, to: ValueState): boolean
+        +getCurrentState(): ValueState
+        +reset(): void
+    }
+
+    class DialecticalSystem {
+        -agents: Map~AgentType, Agent~
+        -debateHistory: Debate[]
+        +initiateDebate(participants: AgentType[], topic: string): Promise~DebateResult~
+        +synthesizePerspectives(perspectives: Perspective[]): Synthesis
+        +addAgent(agent: Agent): void
+    }
+
+    class NihilismMonitor {
+        -metrics: NihilismMetrics
+        -observers: Observer[]
+        +observePhase(phase: Phase): void
+        +classifyNihilism(state: NihilisticState): NihilismType
+        +generateAlert(alert: Alert): void
+        +getMetrics(): NihilismMetrics
+    }
+
+    %% Phase Modules
+    class DeconstructionModule {
+        -genealogist: Genealogist
+        -ragSystem: RAGSystem
+        +deconstruct(concept: MoralConcept): Promise~DeconstructionResult~
+        +analyzeGenealogy(concept: MoralConcept): Genealogy
+    }
+
+    class NihilisticModule {
+        -dionysus: Dionysus
+        -lastMan: LastMan
+        +createVoid(concept: MoralConcept): Promise~NihilisticState~
+        +destroyValues(values: Value[]): void
+    }
+
+    class CreativeModule {
+        -zarathustra: Zarathustra
+        -dionysus: Dionysus
+        -apollo: Apollo
+        +createValue(concept: MoralConcept, void: NihilisticState): Promise~Value~
+        +synthesizePerspectives(perspectives: Perspective[]): Value
+    }
+
+    class EvaluationModule {
+        -zarathustra: Zarathustra
+        -apollo: Apollo
+        -lastMan: LastMan
+        +evaluateValue(value: Value): Promise~EvaluationResult~
+        +applyEternalReturn(value: Value): boolean
+        +checkStructure(value: Value): StructureCheck
+    }
+
+    %% Agents
+    class Agent {
+        <<interface>>
+        +generatePerspective(topic: string, context: Context): Promise~Perspective~
+        +getName(): string
+        +getPersonality(): Personality
+    }
+
+    class Zarathustra {
+        +generatePerspective(topic: string, context: Context): Promise~Perspective~
+        +affirmLife(value: Value): boolean
+        +applyEternalReturn(value: Value): boolean
+    }
+
+    class Genealogist {
+        +generatePerspective(topic: string, context: Context): Promise~Perspective~
+        +deconstructGenealogy(concept: MoralConcept): Genealogy
+        +revealOrigins(value: Value): Origin[]
+    }
+
+    class Dionysus {
+        +generatePerspective(topic: string, context: Context): Promise~Perspective~
+        +createFromVoid(void: NihilisticState): Value
+        +destroyValues(values: Value[]): void
+    }
+
+    class Apollo {
+        +generatePerspective(topic: string, context: Context): Promise~Perspective~
+        +giveForm(value: Value): StructuredValue
+        +evaluateStructure(value: Value): StructureCheck
+    }
+
+    class LastMan {
+        +generatePerspective(topic: string, context: Context): Promise~Perspective~
+        +detectWeakness(value: Value): boolean
+        +warnPassiveNihilism(state: NihilisticState): Alert
+    }
+
+    %% RAG System
+    class RAGSystem {
+        -vectorStore: VectorStore
+        -embedder: Embedder
+        -documentProcessor: DocumentProcessor
+        +retrieveContext(query: string, limit: number): Promise~Context[]
+        +processCorpus(corpus: Document[]): Promise~void~
+        +searchSemantic(query: string): Promise~Document[]
+    }
+
+    class DocumentProcessor {
+        +chunkDocuments(documents: Document[]): Chunk[]
+        +extractMetadata(document: Document): Metadata
+    }
+
+    class Embedder {
+        +generateEmbedding(text: string): Promise~Vector~
+        +generateBatchEmbeddings(texts: string[]): Promise~Vector[]~
+    }
+
+    class VectorStore {
+        +storeEmbedding(embedding: Embedding): Promise~void~
+        +searchSimilar(query: Vector, limit: number): Promise~Embedding[]
+    }
+
+    %% LLM Integration
+    class LLMClient {
+        <<interface>>
+        +generate(prompt: Prompt): Promise~Response~
+        +stream(prompt: Prompt): AsyncGenerator~Response~
+    }
+
+    class LMStudioClient {
+        +generate(prompt: Prompt): Promise~Response~
+        +stream(prompt: Prompt): AsyncGenerator~Response~
+        -baseUrl: string
+        -apiKey: string
+    }
+
+    %% Repositories
+    class ValueRepository {
+        +save(value: Value): Promise~void~
+        +findById(id: string): Promise~Value | null~
+        +findByCriteria(criteria: Criteria): Promise~Value[]~
+    }
+
+    class GenealogyRepository {
+        +save(genealogy: Genealogy): Promise~void~
+        +findByValueId(valueId: string): Promise~Genealogy | null~
+    }
+
+    %% Types
+    class Value {
+        +id: string
+        +content: string
+        +phase: Phase
+        +createdAt: Date
+        +genealogy: Genealogy
+    }
+
+    class MoralConcept {
+        +name: string
+        +description: string
+        +origin: string
+    }
+
+    class Perspective {
+        +agent: AgentType
+        +content: string
+        +tone: Tone
+    }
+
+    class DebateResult {
+        +perspectives: Perspective[]
+        +synthesis: Synthesis
+        +conflicts: Conflict[]
+    }
+
+    %% Relationships
+    Orchestrator --> ValueEngine : uses
+    Orchestrator --> DialecticalSystem : coordinates
+    Orchestrator --> RAGSystem : requests context
+    Orchestrator --> NihilismMonitor : receives alerts
+    Orchestrator --> DeconstructionModule : orchestrates
+    Orchestrator --> NihilisticModule : orchestrates
+    Orchestrator --> CreativeModule : orchestrates
+    Orchestrator --> EvaluationModule : orchestrates
+
+    ValueEngine --> ValueState : manages
+    ValueEngine --> Phase : transitions
+
+    DialecticalSystem --> Agent : coordinates
+    DialecticalSystem --> Zarathustra : uses
+    DialecticalSystem --> Genealogist : uses
+    DialecticalSystem --> Dionysus : uses
+    DialecticalSystem --> Apollo : uses
+    DialecticalSystem --> LastMan : uses
+
+    Agent <|.. Zarathustra : implements
+    Agent <|.. Genealogist : implements
+    Agent <|.. Dionysus : implements
+    Agent <|.. Apollo : implements
+    Agent <|.. LastMan : implements
+
+    DeconstructionModule --> Genealogist : uses
+    NihilisticModule --> Dionysus : uses
+    NihilisticModule --> LastMan : uses
+    CreativeModule --> Zarathustra : uses
+    CreativeModule --> Dionysus : uses
+    CreativeModule --> Apollo : uses
+    EvaluationModule --> Zarathustra : uses
+    EvaluationModule --> Apollo : uses
+    EvaluationModule --> LastMan : uses
+
+    RAGSystem --> VectorStore : uses
+    RAGSystem --> Embedder : uses
+    RAGSystem --> DocumentProcessor : uses
+    RAGSystem --> LLMClient : uses
+
+    LLMClient <|.. LMStudioClient : implements
+
+    ValueRepository --> Value : manages
+    GenealogyRepository --> Genealogy : manages
+
+    NihilismMonitor --> ValueEngine : observes
+    NihilismMonitor --> Phase : monitors
+                    </div>
+                </div>
+            </section>
+
+            <section id="componentes">
+                <h2>🧩 2. Diagrama de Componentes</h2>
+                <p>El diagrama de componentes muestra los componentes principales del sistema, sus interfaces y dependencias externas.</p>
+
+                <div class="diagram-container">
+                    <div class="mermaid">
+graph TB
+    subgraph "API Layer"
+        APIREST[API REST<br/>Fastify]
+    end
+
+    subgraph "Application Layer"
+        Orchestrator[Orchestrator]
+        ValueEngine[ValueEngine<br/>FSM]
+        DialecticalSystem[DialecticalSystem]
+    end
+
+    subgraph "Domain Modules"
+        DeconstructionModule[DeconstructionModule]
+        NihilisticModule[NihilisticModule]
+        CreativeModule[CreativeModule]
+        EvaluationModule[EvaluationModule]
+    end
+
+    subgraph "Agents Layer"
+        Zarathustra[Zarathustra]
+        Genealogist[Genealogist]
+        Dionysus[Dionysus]
+        Apollo[Apollo]
+        LastMan[LastMan]
+    end
+
+    subgraph "RAG System"
+        RAGSystem[RAGSystem]
+        DocumentProcessor[DocumentProcessor]
+        Embedder[Embedder<br/>Transformers.js]
+        VectorStore[VectorStore<br/>pgvector]
+    end
+
+    subgraph "Monitoring"
+        NihilismMonitor[NihilismMonitor]
+        MetricsExporter[Metrics Exporter<br/>Prometheus]
+    end
+
+    subgraph "Queue System"
+        QueueManager[Queue Manager<br/>BullMQ]
+        ValueWorker[Value Generation Worker]
+    end
+
+    subgraph "LLM Integration"
+        LLMClient[LLM Client<br/>OpenAI SDK]
+        LMStudio[LM Studio<br/>Local]
+    end
+
+    subgraph "Data Layer"
+        PostgreSQL[(PostgreSQL<br/>+ pgvector)]
+        Neo4j[(Neo4j<br/>Graph DB)]
+        Redis[(Redis<br/>Cache + Queues)]
+    end
+
+    subgraph "External Services"
+        Prometheus[Prometheus<br/>Metrics]
+        Grafana[Grafana<br/>Visualization]
+    end
+
+    %% API to Application
+    APIREST -->|HTTP Requests| Orchestrator
+    APIREST -->|Queue Jobs| QueueManager
+
+    %% Application Layer
+    Orchestrator --> ValueEngine
+    Orchestrator --> DialecticalSystem
+    Orchestrator --> DeconstructionModule
+    Orchestrator --> NihilisticModule
+    Orchestrator --> CreativeModule
+    Orchestrator --> EvaluationModule
+    Orchestrator --> RAGSystem
+    Orchestrator --> NihilismMonitor
+
+    ValueEngine -->|State Transitions| Orchestrator
+
+    %% Modules to Agents
+    DeconstructionModule --> Genealogist
+    NihilisticModule --> Dionysus
+    NihilisticModule --> LastMan
+    CreativeModule --> Zarathustra
+    CreativeModule --> Dionysus
+    CreativeModule --> Apollo
+    EvaluationModule --> Zarathustra
+    EvaluationModule --> Apollo
+    EvaluationModule --> LastMan
+
+    DialecticalSystem --> Zarathustra
+    DialecticalSystem --> Genealogist
+    DialecticalSystem --> Dionysus
+    DialecticalSystem --> Apollo
+    DialecticalSystem --> LastMan
+
+    %% RAG System
+    RAGSystem --> DocumentProcessor
+    RAGSystem --> Embedder
+    RAGSystem --> VectorStore
+    RAGSystem --> LLMClient
+
+    %% LLM Integration
+    LLMClient --> LMStudio
+    Agents -->|Use| LLMClient
+
+    %% Data Layer
+    VectorStore --> PostgreSQL
+    Orchestrator --> PostgreSQL
+    Orchestrator --> Neo4j
+    QueueManager --> Redis
+    Orchestrator --> Redis
+
+    %% Monitoring
+    NihilismMonitor --> MetricsExporter
+    MetricsExporter --> Prometheus
+    Prometheus --> Grafana
+
+    %% Queue System
+    QueueManager --> ValueWorker
+    ValueWorker --> Orchestrator
+
+    %% Agents (simplified)
+    Agents[Agents] -.->|Use| LLMClient
+                    </div>
+                </div>
+            </section>
+
+            <section id="secuencia">
+                <h2>🔄 3. Diagrama de Secuencia</h2>
+                <p>El diagrama de secuencia muestra el flujo completo de generación de valores a través de las 4 fases, incluyendo interacciones entre componentes.</p>
+
+                <div class="diagram-container">
+                    <div class="mermaid">
+sequenceDiagram
+    participant User as Usuario Final
+    participant API as API REST
+    participant Queue as Queue Manager
+    participant Worker as Value Worker
+    participant Orch as Orchestrator
+    participant VE as ValueEngine
+    participant DS as DialecticalSystem
+    participant RAG as RAG System
+    participant NM as NihilismMonitor
+    participant Gen as Genealogist
+    participant Dion as Dionysus
+    participant Zar as Zarathustra
+    participant Apo as Apollo
+    participant Last as LastMan
+
+    User->>API: POST /api/values/generate
+    API->>Queue: Enqueue generation job
+    API-->>User: 202 Accepted (jobId)
+
+    Queue->>Worker: Process job
+    Worker->>Orch: generateValue(concept)
+
+    %% Phase 1: Deconstruction
+    Orch->>VE: transitionTo(DECONSTRUCTION)
+    VE-->>Orch: State updated
+
+    Orch->>RAG: retrieveContext(concept)
+    RAG-->>Orch: Context from Nietzsche
+
+    Orch->>DS: initiateDebate([Genealogist], topic)
+    DS->>Gen: generatePerspective(topic, context)
+    Gen->>RAG: retrieveContext(genealogy)
+    RAG-->>Gen: Genealogical context
+    Gen-->>DS: Perspective (deconstruction)
+    DS-->>Orch: DebateResult (deconstructed)
+
+    Orch->>NM: observePhase(DECONSTRUCTION)
+    NM-->>Orch: Metrics recorded
+
+    %% Phase 2: Nihilistic
+    Orch->>VE: transitionTo(NIHILISTIC)
+    VE-->>Orch: State updated
+
+    Orch->>DS: initiateDebate([Dionysus, LastMan], void)
+    DS->>Dion: generatePerspective(void, context)
+    Dion-->>DS: Perspective (creative destruction)
+    DS->>Last: generatePerspective(void, context)
+    Last-->>DS: Perspective (warning passive)
+    DS-->>Orch: DebateResult (nihilistic state)
+
+    Orch->>NM: observePhase(NIHILISTIC)
+    NM->>NM: classifyNihilism(state)
+    NM->>NM: generateAlert(if needed)
+    NM-->>Orch: Metrics + Alerts
+
+    %% Phase 3: Creative
+    Orch->>VE: transitionTo(CREATIVE)
+    VE-->>Orch: State updated
+
+    Orch->>RAG: retrieveContext(creation)
+    RAG-->>Orch: Creative context
+
+    Orch->>DS: initiateDebate([Zarathustra, Dionysus, Apollo], creation)
+    DS->>Zar: generatePerspective(creation, context)
+    Zar-->>DS: Perspective (affirmation)
+    DS->>Dion: generatePerspective(creation, context)
+    Dion-->>DS: Perspective (chaos)
+    DS->>Apo: generatePerspective(creation, context)
+    Apo-->>DS: Perspective (form)
+    DS->>DS: synthesizePerspectives()
+    DS-->>Orch: DebateResult (new value)
+
+    %% Phase 4: Evaluation
+    Orch->>VE: transitionTo(EVALUATION)
+    VE-->>Orch: State updated
+
+    Orch->>DS: initiateDebate([Zarathustra, Apollo, LastMan], evaluation)
+    DS->>Zar: generatePerspective(evaluation, context)
+    Zar->>Zar: applyEternalReturn(value)
+    Zar-->>DS: Perspective (affirmed)
+    DS->>Apo: generatePerspective(evaluation, context)
+    Apo->>Apo: evaluateStructure(value)
+    Apo-->>DS: Perspective (structured)
+    DS->>Last: generatePerspective(evaluation, context)
+    Last->>Last: detectWeakness(value)
+    Last-->>DS: Perspective (warning if weak)
+    DS->>DS: synthesizePerspectives()
+    DS-->>Orch: DebateResult (evaluated)
+
+    Orch->>Orch: Finalize value
+    Orch->>PostgreSQL: Save value
+    Orch->>NM: observePhase(COMPLETED)
+    NM-->>Orch: Final metrics
+
+    Orch-->>Worker: Value generated
+    Worker-->>Queue: Job completed
+    Queue->>API: Notify completion
+    API-->>User: GET /api/values/{id}
+                    </div>
+                </div>
+            </section>
+
+            <section id="estados">
+                <h2>🔀 4. Diagrama de Estados (FSM)</h2>
+                <p>El diagrama de estados muestra la máquina de estados finitos del ValueEngine, con todas las transiciones entre fases.</p>
+
+                <div class="diagram-container">
+                    <div class="mermaid">
+stateDiagram-v2
+    [*] --> IDLE: System initialized
+
+    IDLE --> DECONSTRUCTION: generateValue(concept)
+
+    DECONSTRUCTION --> NIHILISTIC: deconstructionComplete()
+    DECONSTRUCTION --> ERROR: deconstructionFailed()
+
+    NIHILISTIC --> CREATIVE: voidCreated()
+    NIHILISTIC --> ERROR: voidCreationFailed()
+    NIHILISTIC --> DECONSTRUCTION: retryDeconstruction()
+
+    CREATIVE --> EVALUATION: valueCreated()
+    CREATIVE --> ERROR: valueCreationFailed()
+    CREATIVE --> NIHILISTIC: retryVoid()
+
+    EVALUATION --> COMPLETED: evaluationPassed()
+    EVALUATION --> ERROR: evaluationFailed()
+    EVALUATION --> CREATIVE: retryCreation()
+
+    COMPLETED --> IDLE: reset()
+    COMPLETED --> [*]: System shutdown
+
+    ERROR --> IDLE: reset()
+    ERROR --> DECONSTRUCTION: retryFromStart()
+    ERROR --> [*]: System shutdown
+
+    note right of DECONSTRUCTION
+        Genealogist analyzes
+        and deconstructs
+        existing values
+    end note
+
+    note right of NIHILISTIC
+        Dionysus creates void,
+        LastMan warns of passivity
+    end note
+
+    note right of CREATIVE
+        Zarathustra, Dionysus,
+        Apollo create new value
+    end note
+
+    note right of EVALUATION
+        Zarathustra applies
+        eternal return,
+        Apollo evaluates structure
+    end note
+                    </div>
+                </div>
+            </section>
+
+            <section id="despliegue">
+                <h2>🚀 5. Diagrama de Despliegue</h2>
+                <p>El diagrama de despliegue muestra la arquitectura de despliegue del sistema, incluyendo servicios Docker, contenedores y redes.</p>
+
+                <div class="diagram-container">
+                    <div class="mermaid">
+graph TB
+    subgraph "Client Layer"
+        Browser[Web Browser<br/>Future Frontend]
+        API_Client[API Clients]
+    end
+
+    subgraph "Application Server"
+        API_Container[Fastify API<br/>Container]
+        Worker_Container[BullMQ Workers<br/>Container]
+    end
+
+    subgraph "Docker Network: nietzsche-network"
+        subgraph "Database Services"
+            PostgreSQL_Container[(PostgreSQL 15<br/>+ pgvector<br/>Container)]
+            Neo4j_Container[(Neo4j 5.x<br/>Container)]
+            Redis_Container[(Redis 7.x<br/>Container)]
+        end
+
+        subgraph "LLM Service"
+            LMStudio_Container[LM Studio<br/>Local LLM<br/>Container]
+        end
+
+        subgraph "Monitoring Stack"
+            Prometheus_Container[Prometheus<br/>Container]
+            Grafana_Container[Grafana<br/>Container]
+        end
+    end
+
+    subgraph "External Storage"
+        Corpus_Volume[Corpus Volume<br/>Nietzsche Texts]
+        Data_Volume[Data Volume<br/>Exports]
+    end
+
+    subgraph "Configuration"
+        Env_File[.env<br/>Configuration]
+        Docker_Compose[docker-compose.yml]
+    end
+
+    %% Client to API
+    Browser -->|HTTPS| API_Container
+    API_Client -->|HTTPS| API_Container
+
+    %% API to Services
+    API_Container -->|SQL| PostgreSQL_Container
+    API_Container -->|Cypher| Neo4j_Container
+    API_Container -->|Redis Protocol| Redis_Container
+    API_Container -->|HTTP| LMStudio_Container
+    API_Container -->|HTTP| Prometheus_Container
+
+    %% Workers to Services
+    Worker_Container -->|SQL| PostgreSQL_Container
+    Worker_Container -->|Cypher| Neo4j_Container
+    Worker_Container -->|Redis Protocol| Redis_Container
+    Worker_Container -->|HTTP| LMStudio_Container
+
+    %% Monitoring
+    Prometheus_Container -->|Scrape| API_Container
+    Prometheus_Container -->|Scrape| Worker_Container
+    Grafana_Container -->|Query| Prometheus_Container
+
+    %% Storage
+    LMStudio_Container -.->|Read| Corpus_Volume
+    API_Container -.->|Read/Write| Data_Volume
+    Worker_Container -.->|Read/Write| Data_Volume
+
+    %% Configuration
+    Docker_Compose -.->|Orchestrates| API_Container
+    Docker_Compose -.->|Orchestrates| Worker_Container
+    Docker_Compose -.->|Orchestrates| PostgreSQL_Container
+    Docker_Compose -.->|Orchestrates| Neo4j_Container
+    Docker_Compose -.->|Orchestrates| Redis_Container
+    Docker_Compose -.->|Orchestrates| LMStudio_Container
+    Docker_Compose -.->|Orchestrates| Prometheus_Container
+    Docker_Compose -.->|Orchestrates| Grafana_Container
+
+    Env_File -.->|Config| API_Container
+    Env_File -.->|Config| Worker_Container
+
+    style API_Container fill:#e1f5ff
+    style Worker_Container fill:#e1f5ff
+    style PostgreSQL_Container fill:#fff4e1
+    style Neo4j_Container fill:#fff4e1
+    style Redis_Container fill:#fff4e1
+    style LMStudio_Container fill:#e8f5e9
+    style Prometheus_Container fill:#f3e5f5
+    style Grafana_Container fill:#f3e5f5
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p><strong>Sistema de Generación de Valores Nietzscheano</strong></p>
+            <p>Última actualización: 2026-01-11 | Versión 1.0</p>
+            <p>Proyecto: <a href="https://github.com/rflvz/nietzsche-ai" target="_blank">github.com/rflvz/nietzsche-ai</a></p>
+            <p>Documentación completa: <a href="./uml-diagrams.md">uml-diagrams.md</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Inicializar Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequence: {
+                useMaxWidth: true,
+                showSequenceNumbers: true
+            },
+            class: {
+                useMaxWidth: true
+            }
+        });
+
+        // Smooth scroll para los enlaces de navegación
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
