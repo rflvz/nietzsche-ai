@@ -122,6 +122,15 @@
             border-radius: 8px;
         }
 
+        .error-message {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c00;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
         footer {
             background: #2d3748;
             color: white;
@@ -221,7 +230,7 @@
                 <p>El diagrama de clases muestra la estructura estática del sistema, incluyendo clases principales, módulos, agentes, interfaces y sus relaciones.</p>
 
                 <div class="diagram-container">
-                    <div class="mermaid">
+                    <pre class="mermaid">
 classDiagram
     %% Core Classes
     class Orchestrator {
@@ -229,105 +238,105 @@ classDiagram
         -dialecticalSystem: DialecticalSystem
         -ragSystem: RAGSystem
         -nihilismMonitor: NihilismMonitor
-        +generateValue(concept: string): Promise~Result~Value, Error~~
-        +coordinatePhase(phase: Phase): Promise~void~
-        +handleError(error: Error): void
+        +generateValue(concept: string) Promise
+        +coordinatePhase(phase: Phase) Promise
+        +handleError(error: Error) void
     }
 
     class ValueEngine {
         -currentState: ValueState
         -stateHistory: ValueState[]
-        +transitionTo(state: ValueState): Result~void, Error~
-        +validateTransition(from: ValueState, to: ValueState): boolean
-        +getCurrentState(): ValueState
-        +reset(): void
+        +transitionTo(state: ValueState) Result
+        +validateTransition(from: ValueState, to: ValueState) boolean
+        +getCurrentState() ValueState
+        +reset() void
     }
 
     class DialecticalSystem {
-        -agents: Map~AgentType, Agent~
+        -agents: Map
         -debateHistory: Debate[]
-        +initiateDebate(participants: AgentType[], topic: string): Promise~DebateResult~
-        +synthesizePerspectives(perspectives: Perspective[]): Synthesis
-        +addAgent(agent: Agent): void
+        +initiateDebate(participants: AgentType[], topic: string) Promise
+        +synthesizePerspectives(perspectives: Perspective[]) Synthesis
+        +addAgent(agent: Agent) void
     }
 
     class NihilismMonitor {
         -metrics: NihilismMetrics
         -observers: Observer[]
-        +observePhase(phase: Phase): void
-        +classifyNihilism(state: NihilisticState): NihilismType
-        +generateAlert(alert: Alert): void
-        +getMetrics(): NihilismMetrics
+        +observePhase(phase: Phase) void
+        +classifyNihilism(state: NihilisticState) NihilismType
+        +generateAlert(alert: Alert) void
+        +getMetrics() NihilismMetrics
     }
 
     %% Phase Modules
     class DeconstructionModule {
         -genealogist: Genealogist
         -ragSystem: RAGSystem
-        +deconstruct(concept: MoralConcept): Promise~DeconstructionResult~
-        +analyzeGenealogy(concept: MoralConcept): Genealogy
+        +deconstruct(concept: MoralConcept) Promise
+        +analyzeGenealogy(concept: MoralConcept) Genealogy
     }
 
     class NihilisticModule {
         -dionysus: Dionysus
         -lastMan: LastMan
-        +createVoid(concept: MoralConcept): Promise~NihilisticState~
-        +destroyValues(values: Value[]): void
+        +createVoid(concept: MoralConcept) Promise
+        +destroyValues(values: Value[]) void
     }
 
     class CreativeModule {
         -zarathustra: Zarathustra
         -dionysus: Dionysus
         -apollo: Apollo
-        +createValue(concept: MoralConcept, void: NihilisticState): Promise~Value~
-        +synthesizePerspectives(perspectives: Perspective[]): Value
+        +createValue(concept: MoralConcept, void: NihilisticState) Promise
+        +synthesizePerspectives(perspectives: Perspective[]) Value
     }
 
     class EvaluationModule {
         -zarathustra: Zarathustra
         -apollo: Apollo
         -lastMan: LastMan
-        +evaluateValue(value: Value): Promise~EvaluationResult~
-        +applyEternalReturn(value: Value): boolean
-        +checkStructure(value: Value): StructureCheck
+        +evaluateValue(value: Value) Promise
+        +applyEternalReturn(value: Value) boolean
+        +checkStructure(value: Value) StructureCheck
     }
 
     %% Agents
     class Agent {
-        <<interface>>
-        +generatePerspective(topic: string, context: Context): Promise~Perspective~
-        +getName(): string
-        +getPersonality(): Personality
+        &lt;&lt;interface&gt;&gt;
+        +generatePerspective(topic: string, context: Context) Promise
+        +getName() string
+        +getPersonality() Personality
     }
 
     class Zarathustra {
-        +generatePerspective(topic: string, context: Context): Promise~Perspective~
-        +affirmLife(value: Value): boolean
-        +applyEternalReturn(value: Value): boolean
+        +generatePerspective(topic: string, context: Context) Promise
+        +affirmLife(value: Value) boolean
+        +applyEternalReturn(value: Value) boolean
     }
 
     class Genealogist {
-        +generatePerspective(topic: string, context: Context): Promise~Perspective~
-        +deconstructGenealogy(concept: MoralConcept): Genealogy
-        +revealOrigins(value: Value): Origin[]
+        +generatePerspective(topic: string, context: Context) Promise
+        +deconstructGenealogy(concept: MoralConcept) Genealogy
+        +revealOrigins(value: Value) Origin[]
     }
 
     class Dionysus {
-        +generatePerspective(topic: string, context: Context): Promise~Perspective~
-        +createFromVoid(void: NihilisticState): Value
-        +destroyValues(values: Value[]): void
+        +generatePerspective(topic: string, context: Context) Promise
+        +createFromVoid(void: NihilisticState) Value
+        +destroyValues(values: Value[]) void
     }
 
     class Apollo {
-        +generatePerspective(topic: string, context: Context): Promise~Perspective~
-        +giveForm(value: Value): StructuredValue
-        +evaluateStructure(value: Value): StructureCheck
+        +generatePerspective(topic: string, context: Context) Promise
+        +giveForm(value: Value) StructuredValue
+        +evaluateStructure(value: Value) StructureCheck
     }
 
     class LastMan {
-        +generatePerspective(topic: string, context: Context): Promise~Perspective~
-        +detectWeakness(value: Value): boolean
-        +warnPassiveNihilism(state: NihilisticState): Alert
+        +generatePerspective(topic: string, context: Context) Promise
+        +detectWeakness(value: Value) boolean
+        +warnPassiveNihilism(state: NihilisticState) Alert
     }
 
     %% RAG System
@@ -335,50 +344,50 @@ classDiagram
         -vectorStore: VectorStore
         -embedder: Embedder
         -documentProcessor: DocumentProcessor
-        +retrieveContext(query: string, limit: number): Promise~Context[]
-        +processCorpus(corpus: Document[]): Promise~void~
-        +searchSemantic(query: string): Promise~Document[]
+        +retrieveContext(query: string, limit: number) Promise
+        +processCorpus(corpus: Document[]) Promise
+        +searchSemantic(query: string) Promise
     }
 
     class DocumentProcessor {
-        +chunkDocuments(documents: Document[]): Chunk[]
-        +extractMetadata(document: Document): Metadata
+        +chunkDocuments(documents: Document[]) Chunk[]
+        +extractMetadata(document: Document) Metadata
     }
 
     class Embedder {
-        +generateEmbedding(text: string): Promise~Vector~
-        +generateBatchEmbeddings(texts: string[]): Promise~Vector[]~
+        +generateEmbedding(text: string) Promise
+        +generateBatchEmbeddings(texts: string[]) Promise
     }
 
     class VectorStore {
-        +storeEmbedding(embedding: Embedding): Promise~void~
-        +searchSimilar(query: Vector, limit: number): Promise~Embedding[]
+        +storeEmbedding(embedding: Embedding) Promise
+        +searchSimilar(query: Vector, limit: number) Promise
     }
 
     %% LLM Integration
     class LLMClient {
-        <<interface>>
-        +generate(prompt: Prompt): Promise~Response~
-        +stream(prompt: Prompt): AsyncGenerator~Response~
+        &lt;&lt;interface&gt;&gt;
+        +generate(prompt: Prompt) Promise
+        +stream(prompt: Prompt) AsyncGenerator
     }
 
     class LMStudioClient {
-        +generate(prompt: Prompt): Promise~Response~
-        +stream(prompt: Prompt): AsyncGenerator~Response~
+        +generate(prompt: Prompt) Promise
+        +stream(prompt: Prompt) AsyncGenerator
         -baseUrl: string
         -apiKey: string
     }
 
     %% Repositories
     class ValueRepository {
-        +save(value: Value): Promise~void~
-        +findById(id: string): Promise~Value | null~
-        +findByCriteria(criteria: Criteria): Promise~Value[]~
+        +save(value: Value) Promise
+        +findById(id: string) Promise
+        +findByCriteria(criteria: Criteria) Promise
     }
 
     class GenealogyRepository {
-        +save(genealogy: Genealogy): Promise~void~
-        +findByValueId(valueId: string): Promise~Genealogy | null~
+        +save(genealogy: Genealogy) Promise
+        +findByValueId(valueId: string) Promise
     }
 
     %% Types
@@ -418,9 +427,6 @@ classDiagram
     Orchestrator --> CreativeModule : orchestrates
     Orchestrator --> EvaluationModule : orchestrates
 
-    ValueEngine --> ValueState : manages
-    ValueEngine --> Phase : transitions
-
     DialecticalSystem --> Agent : coordinates
     DialecticalSystem --> Zarathustra : uses
     DialecticalSystem --> Genealogist : uses
@@ -455,8 +461,7 @@ classDiagram
     GenealogyRepository --> Genealogy : manages
 
     NihilismMonitor --> ValueEngine : observes
-    NihilismMonitor --> Phase : monitors
-                    </div>
+                    </pre>
                 </div>
             </section>
 
@@ -465,26 +470,26 @@ classDiagram
                 <p>El diagrama de componentes muestra los componentes principales del sistema, sus interfaces y dependencias externas.</p>
 
                 <div class="diagram-container">
-                    <div class="mermaid">
+                    <pre class="mermaid">
 graph TB
-    subgraph "API Layer"
-        APIREST[API REST<br/>Fastify]
+    subgraph API_Layer["API Layer"]
+        APIREST[API REST - Fastify]
     end
 
-    subgraph "Application Layer"
+    subgraph Application_Layer["Application Layer"]
         Orchestrator[Orchestrator]
-        ValueEngine[ValueEngine<br/>FSM]
+        ValueEngine[ValueEngine FSM]
         DialecticalSystem[DialecticalSystem]
     end
 
-    subgraph "Domain Modules"
+    subgraph Domain_Modules["Domain Modules"]
         DeconstructionModule[DeconstructionModule]
         NihilisticModule[NihilisticModule]
         CreativeModule[CreativeModule]
         EvaluationModule[EvaluationModule]
     end
 
-    subgraph "Agents Layer"
+    subgraph Agents_Layer["Agents Layer"]
         Zarathustra[Zarathustra]
         Genealogist[Genealogist]
         Dionysus[Dionysus]
@@ -492,44 +497,42 @@ graph TB
         LastMan[LastMan]
     end
 
-    subgraph "RAG System"
+    subgraph RAG_System["RAG System"]
         RAGSystem[RAGSystem]
         DocumentProcessor[DocumentProcessor]
-        Embedder[Embedder<br/>Transformers.js]
-        VectorStore[VectorStore<br/>pgvector]
+        Embedder[Embedder - Transformers.js]
+        VectorStore[VectorStore - pgvector]
     end
 
-    subgraph "Monitoring"
+    subgraph Monitoring_System["Monitoring"]
         NihilismMonitor[NihilismMonitor]
-        MetricsExporter[Metrics Exporter<br/>Prometheus]
+        MetricsExporter[Metrics Exporter - Prometheus]
     end
 
-    subgraph "Queue System"
-        QueueManager[Queue Manager<br/>BullMQ]
+    subgraph Queue_System["Queue System"]
+        QueueManager[Queue Manager - BullMQ]
         ValueWorker[Value Generation Worker]
     end
 
-    subgraph "LLM Integration"
-        LLMClient[LLM Client<br/>OpenAI SDK]
-        LMStudio[LM Studio<br/>Local]
+    subgraph LLM_Integration["LLM Integration"]
+        LLMClient[LLM Client - OpenAI SDK]
+        LMStudio[LM Studio - Local]
     end
 
-    subgraph "Data Layer"
-        PostgreSQL[(PostgreSQL<br/>+ pgvector)]
-        Neo4j[(Neo4j<br/>Graph DB)]
-        Redis[(Redis<br/>Cache + Queues)]
+    subgraph Data_Layer["Data Layer"]
+        PostgreSQL[(PostgreSQL + pgvector)]
+        Neo4j[(Neo4j Graph DB)]
+        Redis[(Redis Cache + Queues)]
     end
 
-    subgraph "External Services"
-        Prometheus[Prometheus<br/>Metrics]
-        Grafana[Grafana<br/>Visualization]
+    subgraph External_Services["External Services"]
+        Prometheus[Prometheus Metrics]
+        Grafana[Grafana Visualization]
     end
 
-    %% API to Application
-    APIREST -->|HTTP Requests| Orchestrator
-    APIREST -->|Queue Jobs| QueueManager
+    APIREST --> Orchestrator
+    APIREST --> QueueManager
 
-    %% Application Layer
     Orchestrator --> ValueEngine
     Orchestrator --> DialecticalSystem
     Orchestrator --> DeconstructionModule
@@ -539,9 +542,6 @@ graph TB
     Orchestrator --> RAGSystem
     Orchestrator --> NihilismMonitor
 
-    ValueEngine -->|State Transitions| Orchestrator
-
-    %% Modules to Agents
     DeconstructionModule --> Genealogist
     NihilisticModule --> Dionysus
     NihilisticModule --> LastMan
@@ -558,35 +558,25 @@ graph TB
     DialecticalSystem --> Apollo
     DialecticalSystem --> LastMan
 
-    %% RAG System
     RAGSystem --> DocumentProcessor
     RAGSystem --> Embedder
     RAGSystem --> VectorStore
     RAGSystem --> LLMClient
 
-    %% LLM Integration
     LLMClient --> LMStudio
-    Agents -->|Use| LLMClient
 
-    %% Data Layer
     VectorStore --> PostgreSQL
     Orchestrator --> PostgreSQL
     Orchestrator --> Neo4j
     QueueManager --> Redis
-    Orchestrator --> Redis
 
-    %% Monitoring
     NihilismMonitor --> MetricsExporter
     MetricsExporter --> Prometheus
     Prometheus --> Grafana
 
-    %% Queue System
     QueueManager --> ValueWorker
     ValueWorker --> Orchestrator
-
-    %% Agents (simplified)
-    Agents[Agents] -.->|Use| LLMClient
-                    </div>
+                    </pre>
                 </div>
             </section>
 
@@ -595,7 +585,7 @@ graph TB
                 <p>El diagrama de secuencia muestra el flujo completo de generación de valores a través de las 4 fases, incluyendo interacciones entre componentes.</p>
 
                 <div class="diagram-container">
-                    <div class="mermaid">
+                    <pre class="mermaid">
 sequenceDiagram
     participant User as Usuario Final
     participant API as API REST
@@ -619,83 +609,67 @@ sequenceDiagram
     Queue->>Worker: Process job
     Worker->>Orch: generateValue(concept)
 
-    %% Phase 1: Deconstruction
     Orch->>VE: transitionTo(DECONSTRUCTION)
     VE-->>Orch: State updated
 
     Orch->>RAG: retrieveContext(concept)
     RAG-->>Orch: Context from Nietzsche
 
-    Orch->>DS: initiateDebate([Genealogist], topic)
-    DS->>Gen: generatePerspective(topic, context)
+    Orch->>DS: initiateDebate
+    DS->>Gen: generatePerspective
     Gen->>RAG: retrieveContext(genealogy)
     RAG-->>Gen: Genealogical context
     Gen-->>DS: Perspective (deconstruction)
-    DS-->>Orch: DebateResult (deconstructed)
+    DS-->>Orch: DebateResult
 
     Orch->>NM: observePhase(DECONSTRUCTION)
     NM-->>Orch: Metrics recorded
 
-    %% Phase 2: Nihilistic
     Orch->>VE: transitionTo(NIHILISTIC)
     VE-->>Orch: State updated
 
-    Orch->>DS: initiateDebate([Dionysus, LastMan], void)
-    DS->>Dion: generatePerspective(void, context)
-    Dion-->>DS: Perspective (creative destruction)
-    DS->>Last: generatePerspective(void, context)
-    Last-->>DS: Perspective (warning passive)
-    DS-->>Orch: DebateResult (nihilistic state)
+    Orch->>DS: initiateDebate
+    DS->>Dion: generatePerspective
+    Dion-->>DS: Perspective
+    DS->>Last: generatePerspective
+    Last-->>DS: Perspective
+    DS-->>Orch: DebateResult
 
     Orch->>NM: observePhase(NIHILISTIC)
-    NM->>NM: classifyNihilism(state)
-    NM->>NM: generateAlert(if needed)
+    NM->>NM: classifyNihilism
     NM-->>Orch: Metrics + Alerts
 
-    %% Phase 3: Creative
     Orch->>VE: transitionTo(CREATIVE)
     VE-->>Orch: State updated
 
-    Orch->>RAG: retrieveContext(creation)
-    RAG-->>Orch: Creative context
+    Orch->>DS: initiateDebate
+    DS->>Zar: generatePerspective
+    Zar-->>DS: Perspective
+    DS->>Dion: generatePerspective
+    Dion-->>DS: Perspective
+    DS->>Apo: generatePerspective
+    Apo-->>DS: Perspective
+    DS->>DS: synthesizePerspectives
+    DS-->>Orch: DebateResult
 
-    Orch->>DS: initiateDebate([Zarathustra, Dionysus, Apollo], creation)
-    DS->>Zar: generatePerspective(creation, context)
-    Zar-->>DS: Perspective (affirmation)
-    DS->>Dion: generatePerspective(creation, context)
-    Dion-->>DS: Perspective (chaos)
-    DS->>Apo: generatePerspective(creation, context)
-    Apo-->>DS: Perspective (form)
-    DS->>DS: synthesizePerspectives()
-    DS-->>Orch: DebateResult (new value)
-
-    %% Phase 4: Evaluation
     Orch->>VE: transitionTo(EVALUATION)
     VE-->>Orch: State updated
 
-    Orch->>DS: initiateDebate([Zarathustra, Apollo, LastMan], evaluation)
-    DS->>Zar: generatePerspective(evaluation, context)
-    Zar->>Zar: applyEternalReturn(value)
-    Zar-->>DS: Perspective (affirmed)
-    DS->>Apo: generatePerspective(evaluation, context)
-    Apo->>Apo: evaluateStructure(value)
-    Apo-->>DS: Perspective (structured)
-    DS->>Last: generatePerspective(evaluation, context)
-    Last->>Last: detectWeakness(value)
-    Last-->>DS: Perspective (warning if weak)
-    DS->>DS: synthesizePerspectives()
-    DS-->>Orch: DebateResult (evaluated)
+    Orch->>DS: initiateDebate
+    DS->>Zar: generatePerspective
+    Zar-->>DS: Perspective
+    DS->>Apo: generatePerspective
+    Apo-->>DS: Perspective
+    DS->>Last: generatePerspective
+    Last-->>DS: Perspective
+    DS-->>Orch: DebateResult
 
     Orch->>Orch: Finalize value
-    Orch->>PostgreSQL: Save value
-    Orch->>NM: observePhase(COMPLETED)
-    NM-->>Orch: Final metrics
-
     Orch-->>Worker: Value generated
     Worker-->>Queue: Job completed
     Queue->>API: Notify completion
     API-->>User: GET /api/values/{id}
-                    </div>
+                    </pre>
                 </div>
             </section>
 
@@ -704,7 +678,7 @@ sequenceDiagram
                 <p>El diagrama de estados muestra la máquina de estados finitos del ValueEngine, con todas las transiciones entre fases.</p>
 
                 <div class="diagram-container">
-                    <div class="mermaid">
+                    <pre class="mermaid">
 stateDiagram-v2
     [*] --> IDLE: System initialized
 
@@ -734,26 +708,24 @@ stateDiagram-v2
 
     note right of DECONSTRUCTION
         Genealogist analyzes
-        and deconstructs
-        existing values
+        and deconstructs values
     end note
 
     note right of NIHILISTIC
-        Dionysus creates void,
+        Dionysus creates void
         LastMan warns of passivity
     end note
 
     note right of CREATIVE
-        Zarathustra, Dionysus,
+        Zarathustra, Dionysus
         Apollo create new value
     end note
 
     note right of EVALUATION
         Zarathustra applies
-        eternal return,
-        Apollo evaluates structure
+        eternal return test
     end note
-                    </div>
+                    </pre>
                 </div>
             </section>
 
@@ -762,94 +734,51 @@ stateDiagram-v2
                 <p>El diagrama de despliegue muestra la arquitectura de despliegue del sistema, incluyendo servicios Docker, contenedores y redes.</p>
 
                 <div class="diagram-container">
-                    <div class="mermaid">
+                    <pre class="mermaid">
 graph TB
-    subgraph "Client Layer"
-        Browser[Web Browser<br/>Future Frontend]
+    subgraph Client_Layer["Client Layer"]
+        Browser[Web Browser]
         API_Client[API Clients]
     end
 
-    subgraph "Application Server"
-        API_Container[Fastify API<br/>Container]
-        Worker_Container[BullMQ Workers<br/>Container]
+    subgraph Application_Server["Application Server"]
+        API_Container[Fastify API Container]
+        Worker_Container[BullMQ Workers Container]
     end
 
-    subgraph "Docker Network: nietzsche-network"
-        subgraph "Database Services"
-            PostgreSQL_Container[(PostgreSQL 15<br/>+ pgvector<br/>Container)]
-            Neo4j_Container[(Neo4j 5.x<br/>Container)]
-            Redis_Container[(Redis 7.x<br/>Container)]
-        end
-
-        subgraph "LLM Service"
-            LMStudio_Container[LM Studio<br/>Local LLM<br/>Container]
-        end
-
-        subgraph "Monitoring Stack"
-            Prometheus_Container[Prometheus<br/>Container]
-            Grafana_Container[Grafana<br/>Container]
-        end
+    subgraph Database_Services["Database Services"]
+        PostgreSQL_Container[(PostgreSQL 15 + pgvector)]
+        Neo4j_Container[(Neo4j 5.x)]
+        Redis_Container[(Redis 7.x)]
     end
 
-    subgraph "External Storage"
-        Corpus_Volume[Corpus Volume<br/>Nietzsche Texts]
-        Data_Volume[Data Volume<br/>Exports]
+    subgraph LLM_Service["LLM Service"]
+        LMStudio_Container[LM Studio Local LLM]
     end
 
-    subgraph "Configuration"
-        Env_File[.env<br/>Configuration]
-        Docker_Compose[docker-compose.yml]
+    subgraph Monitoring_Stack["Monitoring Stack"]
+        Prometheus_Container[Prometheus]
+        Grafana_Container[Grafana]
     end
 
-    %% Client to API
-    Browser -->|HTTPS| API_Container
-    API_Client -->|HTTPS| API_Container
+    Browser --> API_Container
+    API_Client --> API_Container
 
-    %% API to Services
-    API_Container -->|SQL| PostgreSQL_Container
-    API_Container -->|Cypher| Neo4j_Container
-    API_Container -->|Redis Protocol| Redis_Container
-    API_Container -->|HTTP| LMStudio_Container
-    API_Container -->|HTTP| Prometheus_Container
+    API_Container --> PostgreSQL_Container
+    API_Container --> Neo4j_Container
+    API_Container --> Redis_Container
+    API_Container --> LMStudio_Container
+    API_Container --> Prometheus_Container
 
-    %% Workers to Services
-    Worker_Container -->|SQL| PostgreSQL_Container
-    Worker_Container -->|Cypher| Neo4j_Container
-    Worker_Container -->|Redis Protocol| Redis_Container
-    Worker_Container -->|HTTP| LMStudio_Container
+    Worker_Container --> PostgreSQL_Container
+    Worker_Container --> Neo4j_Container
+    Worker_Container --> Redis_Container
+    Worker_Container --> LMStudio_Container
 
-    %% Monitoring
-    Prometheus_Container -->|Scrape| API_Container
-    Prometheus_Container -->|Scrape| Worker_Container
-    Grafana_Container -->|Query| Prometheus_Container
-
-    %% Storage
-    LMStudio_Container -.->|Read| Corpus_Volume
-    API_Container -.->|Read/Write| Data_Volume
-    Worker_Container -.->|Read/Write| Data_Volume
-
-    %% Configuration
-    Docker_Compose -.->|Orchestrates| API_Container
-    Docker_Compose -.->|Orchestrates| Worker_Container
-    Docker_Compose -.->|Orchestrates| PostgreSQL_Container
-    Docker_Compose -.->|Orchestrates| Neo4j_Container
-    Docker_Compose -.->|Orchestrates| Redis_Container
-    Docker_Compose -.->|Orchestrates| LMStudio_Container
-    Docker_Compose -.->|Orchestrates| Prometheus_Container
-    Docker_Compose -.->|Orchestrates| Grafana_Container
-
-    Env_File -.->|Config| API_Container
-    Env_File -.->|Config| Worker_Container
-
-    style API_Container fill:#e1f5ff
-    style Worker_Container fill:#e1f5ff
-    style PostgreSQL_Container fill:#fff4e1
-    style Neo4j_Container fill:#fff4e1
-    style Redis_Container fill:#fff4e1
-    style LMStudio_Container fill:#e8f5e9
-    style Prometheus_Container fill:#f3e5f5
-    style Grafana_Container fill:#f3e5f5
-                    </div>
+    Prometheus_Container --> API_Container
+    Prometheus_Container --> Worker_Container
+    Grafana_Container --> Prometheus_Container
+                    </pre>
                 </div>
             </section>
         </main>
@@ -863,7 +792,7 @@ graph TB
     </div>
 
     <script>
-        // Inicializar Mermaid
+        // Inicializar Mermaid con manejo de errores
         mermaid.initialize({
             startOnLoad: true,
             theme: 'default',
@@ -875,11 +804,17 @@ graph TB
             },
             sequence: {
                 useMaxWidth: true,
-                showSequenceNumbers: true
+                showSequenceNumbers: false
             },
             class: {
                 useMaxWidth: true
-            }
+            },
+            logLevel: 'debug'
+        });
+
+        // Renderizar diagramas con manejo de errores
+        window.addEventListener('load', function() {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
         });
 
         // Smooth scroll para los enlaces de navegación
@@ -888,8 +823,15 @@ graph TB
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
             });
+        });
+
+        // Manejo de errores de Mermaid
+        window.addEventListener('error', function(e) {
+            console.error('Error rendering diagram:', e);
         });
     </script>
 </body>
